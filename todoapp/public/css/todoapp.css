@@ -1,0 +1,171 @@
+
+#header {
+    background: #ffffff;
+    height: 50px;
+    color: #099acb;
+    border-bottom: solid 1px #c3c3c3;
+}
+#nav-bar {
+    float: left;
+    width: 150px;
+
+
+}
+#view-select {
+    float: left;
+    width: 150px;
+    border-left: 1px solid #000000 ;
+
+}
+#searchbox{
+    float: right;
+    margin-right: 70px;
+}
+
+.nav {
+    display: block;
+    float: left;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.view {
+    display: block;
+    float: left;
+    margin-left: 10px;
+    cursor: pointer;
+
+
+}
+#main {
+
+    height: 1000px;
+    margin-top: 10px;
+}
+#taskinfo {
+    display: none;
+    height: 1000px;
+    background: #ffffff;
+}
+#addtask{
+    display: none;
+    height: 1000px;
+    background: #ffffff;
+}
+#taskcontainer {
+
+    margin-left: 40%;
+
+}
+#newtask {
+    margin-top:100px
+}
+#tabs-1 {
+
+    background: #ffffff;
+    width: 1500px;
+}
+#tabs-1 .block {
+    background: #ffffff;
+    width: 300px;
+    float: left;
+    margin-right: 10px;
+
+}
+
+.taskcont {
+    margin-top: 10px;
+    height: 50px;
+    background: white;
+    color: #2B2B2B;
+    border: solid 1px darkgray;
+
+}
+.text {
+    cursor: pointer;
+}
+.taskcont:hover {
+    background: #dfdfdf;
+}
+#hide-1{
+display: none;
+}
+.blockinfo {
+    height: 30px;
+}
+.addline {
+    background: #f4f4f4;
+    color: #2B2B2B;
+    height: 30px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.add {
+    margin-left: 48%;
+    margin-top: 50%;
+}
+.addline:hover {
+    background: #a5a5a5;
+}
+#gotomain {
+    cursor: pointer;
+}
+#foldid{
+    display: none;
+}
+.block {
+    color: #099acb;
+}
+.delete {
+    float: right;
+    margin-top: 15px;
+}
+.text{
+    margin-left: 20px;
+    float: left;
+}
+#tabs-2 {
+    width: 2500px;
+}
+.foldern{
+    float: left;
+    margin-top: 0;
+}
+.delfolder {
+    float: right;
+
+    font-size: small;
+    color: #272727;
+    cursor: pointer;
+}
+#personal {
+    display: none;
+}
+#newfolder2{
+    color: #099acb;
+    margin-left: 20px;
+    cursor: pointer;
+}
+#newfolder{
+    float: right;
+    margin-right: 10px;
+}
+#backtask{
+    cursor: pointer;
+    float:right;
+    margin-right: 10%;
+}
+#info {
+
+    margin-left: 40px;
+}
+#tasknameupdt{
+    float: left;
+}
+#updtfolder {
+    float:left;
+    margin-left: 30px;
+}
+#managesubs{
+    float: left;
+    margin-left: 30px;
+}

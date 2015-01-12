@@ -1,6 +1,34 @@
 $(document).ready(function(){
+    $('#conteiner').hide();
     $('#tabs-2').hide();
     $('#newfolder').hide();
+
+
+
+
+    $('#reg').click(function(){
+        $('#loginform').hide();
+        $('#registerform').show();
+    });
+    $('#log').click(function(){
+        $('#registerform').hide();
+        $('#loginform').show();
+        });
+    $('#subtasks2').click(function(){
+        $('#managesubs').show();
+        $('#managenotes').hide();
+        $('#managefiles').hide();
+    });
+    $('#filename').click(function(){
+        $('#managefiles').show();
+        $('#managenotes').hide();
+        $('#managesubs').hide();
+    });
+    $('#notes').click(function(){
+        $('#managenotes').show();
+        $('#managefiles').hide();
+        $('#managesubs').hide();
+    });
 
 
 
@@ -50,7 +78,7 @@ $(document).ready(function(){
             }if(data.dayid ==4){
                 $('#tasknameupdt').append('<h3 id="day">Someday</h3>');
             }
-            var foldid = data.folderid;
+            /*var foldid = data.folderid;
             $.post('getfolder', foldid, function(info){
                 console.log(info);
                 $.each(info, function(i, value){
@@ -61,11 +89,18 @@ $(document).ready(function(){
                     }
 
                 });
-            });
+            });*/
         });
         $.post('subtasks', info, function(data){
+            $('#subtasks2').text("Subtasks ("+ data.length +")");
             $.each(data, function(i, value){
                 $('#subtasklist').append('<li id="'+value.id+'">'+value.subtask+'<button class="delsub">Delete</button></li>');
+            });
+        });
+        $.post('notes', info, function(data){
+            $('#notes').text("Notes ("+ data.length +")");
+            $.each(data, function(i, value){
+                $('#notelist').append('<li id="'+value.id+'">'+value['notes']+'<button class="delnote">Delete</button></li>');
             });
         });
 
@@ -78,6 +113,7 @@ $(document).ready(function(){
         var subid = {};
         subid['id'] = $(this).parent().attr('id');
         $.post('delsubtask', subid, function(data){
+
         });
         $(this).parent().remove();
     });
@@ -125,6 +161,39 @@ $(document).ready(function(){
 
         return false;
     });
+    //---------------addnote---------------------//
+    $('#newnote').bind("enterKey",function(){
+        var info = {};
+        info['taskid'] = $('#taskid').text();
+
+        info['note'] = $('#newnote').val();
+        if(info['note'] != ""){
+            $.post('addnote', info, function(data){
+                $('#notelist').append('<li id="'+data.id+'">'+data['notes']+'<button class="delnote">Delete</button></li>');
+            });
+            $('#newnote').val('');
+        }else {
+            alert('Please enter note');
+        }
+
+        return false;
+    });
+    $('#newnote').keyup(function(e){
+        if(e.keyCode == 13)
+        {
+            $(this).trigger("enterKey");
+        }
+    });
+
+    //---------------deletenote------------------//
+    $('#taskinfo').delegate(".delnote", "click", function(){
+        var noteid = {};
+        noteid['id'] = $(this).parent().attr('id');
+        $.post('delnote', noteid, function(data){
+
+        });
+        $(this).parent().remove();
+    });
 //-----------------updatefolder------------------//
     $('#getfolder').click(function(){
 
@@ -136,6 +205,7 @@ $(document).ready(function(){
 
     $('#backtask').click(function(){
         $('#subtasklist').children().remove();
+        $('#notelist').children().remove();
         $('#day').remove();
         $('#taskcontrol').show();
         $('#taskinfo').hide();
@@ -168,6 +238,7 @@ $(document).ready(function(){
         $('#addtask').hide();
 
     });
+    //----------------------delete task--------------------//
     $('#main').delegate(".delete", "click", function(){
         var id = $(this).parent().attr('id');
         var data = {};
@@ -176,7 +247,7 @@ $(document).ready(function(){
         $('.delete').parent('#'+id).remove();
     });
 
-
+//----------------------delete folder ------------------//
     $('#tabs-2').delegate(".delfolder", "click", function(){
 
         var data = $(this).parent().parent().attr('id');
@@ -184,7 +255,6 @@ $(document).ready(function(){
         folderid['id']=data;
         $.post('delfolder', folderid, function(data){
             $.each(data, function(i,value){
-                console.log(value.id);
                 $('#6').children('.item-column').append('<div class="taskcont" id="'+value.id+'"><p class="text">'+value.taskname+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>');
             });
 
@@ -208,15 +278,17 @@ $(document).ready(function(){
             newtask["folder"] = folderid;
             newtask["date"] = date;
             $.post('addtask', newtask,  function(data){
-                $('#'+dayid).children('.item-column').append('<div class="taskcont" id="'+data.id+'"><p class="text">'+task+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>');
-                $('#'+folderid).children('.item-column').append('<div class="taskcont" id="'+data.id+'"><p class="text">'+task+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>');
+                $('#'+dayid).children('.item-column').append('<div class="taskcont" id="'+data.id+'"><p class="text">'+task+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>').find('.taskcont').draggable({containment:'document', helper:'clone'});
+                $('#'+folderid).children('.item-column').append('<div class="taskcont" id="'+data.id+'"><p class="text">'+task+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>').find('.taskcont').draggable({containment:'document', helper:'clone'});
             });
+
             $('#dayid').empty();
             $('#newtask').val('');
             $('.check2').removeAttr('checked');
             $('#addtask').hide();
 
             $('#taskcontrol').show();
+            $( ".taskcont" ).draggable({containment:'document', helper:'clone'});
             return false;
         }else{
             alert('Please enter Task name')
@@ -251,6 +323,22 @@ $(document).ready(function(){
                 $(block).attr('id', data.id);
                 $(block).find('.taskcont').remove();
                 $(block).appendTo('#tabs-2');
+                $(block).children('.item-column').droppable({ hoverClass: 'border', tolerance:'intersect', helper: 'clone',
+                    drop: function(event, ui) {
+
+                        $(this).append(ui.draggable);
+                        var data1 = {};
+                        var colid = $(this).parent().attr('id');
+                        var taskid = ui.draggable.attr("id");
+                        data1 ['colid'] = colid;
+                        data1['taskid'] = taskid;
+                        $.post('updatecolumn', data1, function (data) {
+
+                        });
+
+                    }
+
+                });
                 $('#foldname').val('');
             });}
         else{
@@ -258,6 +346,105 @@ $(document).ready(function(){
         }
         return false;
     });
+//--------------------registration---------------------//
+$('#register').click(function(){
+    $('#errors').children().remove();
+    var regdata = {};
+    var name = $('#name').val();
+    var surname = $('#surname').val();
+    var pass1 = $('#pass1').val();
+    var pass2 = $('#pass2').val();
 
+    if(name.length < 5){
+        $('#errors').append('<li>Name must be at least 5 characters </li>');
+    }
+
+    if(surname.length < 5) {
+        $('#errors').append('<li>Surname must be at least 5 characters </li>');
+    }
+    if(pass1.length < 5) {
+        $('#errors').append('<li>Password must be at least 5 characters </li>');
+    }
+    if(pass1 != pass2){
+        $('#errors').append('<li>Passwords must be equal </li>');
+    }
+    if(name.length >=5 && surname.length >= 5 && pass1.length >= 5 && pass1 == pass2 ) {
+        regdata['name'] = name;
+        regdata['surname'] = surname;
+        regdata['pass1'] = pass1;
+        $.post('adduser', regdata, function (data) {
+
+        });
+        $('#name').val('');
+        $('#surname').val('');
+        $('#pass1').val('');
+        $('#pass2').val('');
+        alert('Registration was successful');
+    }
+});
+    //-------------------login-----------------//
+    $('#connect').click(function(){
+        $('#logerrors').children().remove();
+        var loginfo = {};
+        var name = $('#logname').val();
+        var pass = $('#logpass').val();
+        if(name.length < 5){
+            $('#logerrors').append('<li>Name must be at least 5 characters </li>');
+        }
+
+        if(pass.length < 5) {
+            $('#logerrors').append('<li>Surname must be at least 5 characters </li>');
+        }
+
+        if (name.length >= 5 && pass.length >= 5){
+            loginfo['name'] = name;
+            loginfo['pass'] = pass;
+            $.post('login', loginfo, function (data) {
+                if(data != ""){
+                    $('#userinfo').text('Welcome ' + data.name+ " " +data.surname);
+
+                    $('#mainpg').hide();
+                    $('#conteiner').show();
+                }
+
+            });
+
+        }
+
+    });
+    //-------------------mouse hover ----------------------//
+    $('#taskcontrol').delegate('.taskcont','mouseover mouseout',function(e){
+        if(e.type=='mouseover')
+        {
+            $(this).css("background-color", "#dfdfdf");
+            $(this).children('.delete').show();
+        }
+        else if(e.type=='mouseout')
+        {
+            $(this).css("background-color", "white");
+            $(this).children('.delete').hide();
+        }
+    });
+
+    //---------------------drag and drop function-------------------//
+    $(function() {
+        $( ".taskcont" ).draggable({containment:'document', helper:'clone'});
+        $( ".item-column" ).droppable({ hoverClass: 'border', tolerance:'intersect', helper: 'clone',
+            drop: function(event, ui) {
+
+               $(this).append(ui.draggable);
+                var data1 = {};
+                var colid = $(this).parent().attr('id');
+                var taskid = ui.draggable.attr("id");
+                data1 ['colid'] = colid;
+                data1['taskid'] = taskid;
+                $.post('updatecolumn', data1, function (data) {
+
+                });
+
+            }
+
+        });
+    });
 
 });

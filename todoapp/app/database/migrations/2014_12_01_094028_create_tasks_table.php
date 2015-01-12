@@ -19,6 +19,7 @@ class CreateTasksTable extends Migration {
             $table->integer('dayid');
             $table->integer('folderid');
             $table->date('date');
+            $table->integer('user_id');
             $table->timestamps();
 		});
 	}

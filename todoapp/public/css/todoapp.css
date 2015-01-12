@@ -41,6 +41,48 @@
     height: 1000px;
     margin-top: 10px;
 }
+
+#mytabs {
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    height: 500px;
+    background: #f9fff6;
+}
+#mainlist {
+    height: 50px;
+    background: #099cd5;
+    border-bottom: 2px solid #096197;
+}
+.mainlist {
+    display: block;
+    float: right;
+    margin-right: 30px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+#loginform {
+    height: 430px;
+    margin-top: 15px;
+    background: #d7d7d7;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #808080;
+}
+#loginbox {
+    padding-top: 100px;
+    padding-left: 50px;
+}
+#registerbox {
+
+    padding-left: 50px;
+}
+#registerform {
+    height: 430px;
+    margin-top: 15px;
+    background: #d7d7d7;
+    display: none;
+}
+
 #taskinfo {
     display: none;
     height: 1000px;
@@ -83,9 +125,7 @@
 .text {
     cursor: pointer;
 }
-.taskcont:hover {
-    background: #dfdfdf;
-}
+
 #hide-1{
 display: none;
 }
@@ -118,6 +158,8 @@ display: none;
 .delete {
     float: right;
     margin-top: 15px;
+    cursor: pointer;
+    display: none;
 }
 .text{
     margin-left: 20px;
@@ -152,20 +194,49 @@ display: none;
 #backtask{
     cursor: pointer;
     float:right;
-    margin-right: 10%;
-}
-#info {
 
-    margin-left: 40px;
 }
-#tasknameupdt{
+
+
+.border {
+    border: 1px solid #000000;
+    min-height: 150px;
+}
+.item-column {
+    min-height: 70px;
+}
+
+#info {
+    height: 70px;
+    width: 900px;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#manageform {
+    height: 600px;
+    width: 900px;
+    background: #ffffff;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+.managenames {
     float: left;
+    margin-left: 150px;
+    cursor: pointer;
+    color: #099acb;
 }
-#updtfolder {
-    float:left;
-    margin-left: 30px;
+.manage {
+    padding-top: 100px;
+    width: 900px;
+    height: 450px;
+    border: 1px solid #d0d0d0;
+    padding-left: 50px;
+
 }
-#managesubs{
-    float: left;
-    margin-left: 30px;
+#userinfobox {
+    float: right;
+    margin-right: 10px;
 }

@@ -8,9 +8,51 @@
     <script src="{{ asset ('js/custom.js')}}"></script>
 
     <title>todo</title>
+ <script>
 
+  </script>
 </head>
 <body>
+<div id="mainpg">
+    <div id="mytabs">
+      <div id="mainlist">
+      <ul>
+       <li class="mainlist" id="reg">Registration</li>
+       <li class="mainlist" id="log">Login</li>
+      </ul>
+      </div>
+      <div id="loginform">
+      <div id="loginbox">
+      Name<br><br>
+      <input id="logname" type="text">
+      <br><br>
+      Password<br><br>
+      <input id="logpass" type="password">
+      <br><br>
+      <button id="connect">Login</button>
+      </div>
+      <ul id="logerrors"></ul>
+      </div>
+      <div id="registerform">
+      <div id="registerbox">
+            Name<br><br>
+            <input id="name"  type="text">
+            <br><br>
+            Surname<br><br>
+            <input id="surname" type="text">
+            <br><br>
+             Password<br><br>
+             <input id="pass1" type="password">
+             <br><br>
+             Repeat password<br><br>
+             <input id="pass2" type="password">
+             <br><br>
+      <button id="register">Register</button>
+            </div>
+            <ul id="errors"></ul>
+       </div>
+    </div>
+</div>
     <div id="conteiner">
         <div id="header">
             <div id="nav-bar">
@@ -24,6 +66,9 @@
                                 <li class="view" id="list">List</li>
                                 <li class="view" id="grid">Grid</li>
                             </ul>
+            </div>
+            <div id="userinfobox">
+            <h4 id="userinfo">Juris Ratnieks</h4>
             </div>
             <div id="searchbox">
                 <input id="search" placeholder="Search tasks "type="text">
@@ -53,25 +98,30 @@
             <div id="info">
                  <p id="taskid" style="display: none"></p>
                  <div id="tasknameupdt">
-                 <h2>Update task</h2>
                  <input id="update">
                  <button id="updttask">Update</button>
                  </div>
-                 <div id="updtfolder">
-                 <form id="taskfolders">
-
-                                 </form>
-                  <button id="getfolder">Update</button>
-                                 </div>
-
-                  <div id="managesubs">
+            </div>
+            <h2 id="backtask">go to main</h2>
+            <div id="manageform">
+                   <h3 class="managenames" id="notes">Notes</h3>
+                   <h3 class="managenames" id="subtasks2">Subtasks</h3>
+                   <h3 class="managenames" id="filename">Attachments</h3>
+                  <div class="manage" id="managesubs" style="display: none">
                   <h2>Manage subtasks</h2>
                   <input id="newsub" placeholder="add subtask ">
                  <ul id="subtasklist"></ul>
-
                  </div>
-                 <h2 id="backtask">go to main</h2>
+                 <div class="manage" id="managenotes">
+                 <h2>Manage notes</h2>
+                 <input id="newnote" placeholder="add note ">
+                 <ul id="notelist"></ul>
+                 </div>
+                 <div class="manage" id="managefiles" style="display: none">There will be file uploading
+                 </div>
             </div>
+
+
         </div>
         <div id="taskcontrol">
             <div id="tabs-1">

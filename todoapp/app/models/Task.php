@@ -18,6 +18,7 @@ class Task extends Eloquent implements UserInterface, RemindableInterface {
 
 
     }
+
     public static function addtask($data){
         $data = Task::create([
             'taskname'=>$data['task'],
@@ -70,5 +71,17 @@ class Task extends Eloquent implements UserInterface, RemindableInterface {
         $tasks = Task::where('folderid', '=', $id['id'])->take(100)->get();
         return $tasks;
     }
+    public static function uodate_task_day ($data){
+        Task::where('id', '=', $data['taskid'])->update([
+            'dayid' => $data['colid']
 
+        ]);
+
+    }
+    public static function update_task_folder ($data) {
+        Task::where('id', '=', $data['taskid'])->update([
+            'folderid' => $data['colid']
+
+        ]);
+    }
 }

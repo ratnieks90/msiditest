@@ -33,7 +33,7 @@ Route::post('delsubtask', 'HomeController@delsub');
 Route::post('addsub', 'HomeController@addsubtask');
 Route::post('getfolder', 'HomeController@getfold');
 Route::post('addfolder', 'HomeController@newfolder');
-Route::post('adduser', 'HomeController@reguser');
+Route::post('registration', 'HomeController@reguser');
 Route::post('login', 'HomeController@loguser');
 Route::post('updatecolumn', 'HomeController@updatefolder1');
 Route::post('addnote', 'HomeController@addnote');

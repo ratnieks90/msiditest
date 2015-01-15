@@ -4,122 +4,45 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="{{ asset ('css/login.css') }}">
     <script src="{{ asset ('js/jquery-1.11.1.min.js')}}"></script>
+    <script src="{{ asset ('js/jquery-ui.min.js')}}"></script>
 
     <title>todo</title>
 
 </head>
 <body>
-<div id="header">
-    <div id="nav">
-        <ul >
-            <li id="List">List View</li>
-            <li id="Grid">Grid View</li>
-        </ul>
-
-    </div>
-    <div id="search">
 
 
-    </div>
-</div>
-
-<div id="content">
-    <div class="col">
-    <li id="List">Today</li>
-                <p>Google was founded by Larry Page and Sergey Brin while
-                they were Ph.D. students at Stanford University. Together
-                they own about 14 percent of its shares but control 56 of th
-                e stockholder voting power through supervoting stock. They
-                incorporated Google as a privately held company on September 4
-                , 1998. An initial public offering followed on August 19, 2004.
-                 Its mission statement from the outset was "to organize the world's
-                  information and make it universally accessible and useful,"[11] and
-                   its unofficial slogan was "Don't
-                 be evil."[12][13] In 2004, Google moved to its new]</p>
-    </div>
-    <div class="col">
-    <li id="List">Tommorrow</li>
-                 <p>Google was founded by Larry Page and Sergey Brin while
-                                they were Ph.D. students at Stanford University. Together
-                                they own about 14 percent of its shares but control 56 of th
-                                e stockholder voting power through supervoting stock. They
-                                incorporated Google as a privately held company on September 4
-                                , 1998. An initial public offering followed on August 19, 2004.
-                                 Its mission statement from the outset was "to organize the world's
-                                  information and make it universally accessible and useful,"[11] and
-                                   its unofficial slogan was "Don't
-                                 be evil."[12][13] In 2004, Google moved to its new]</p>
-    </div>
-    <div class="col">
-    <li id="List">Upcoming</li>
-                 <p>Google was founded by Larry Page and Sergey Brin while
-                                they were Ph.D. students at Stanford University. Together
-                                they own about 14 percent of its shares but control 56 of th
-                                e stockholder voting power through supervoting stock. They
-                                incorporated Google as a privately held company on September 4
-                                , 1998. An initial public offering followed on August 19, 2004.
-                                 Its mission statement from the outset was "to organize the world's
-                                  information and make it universally accessible and useful,"[11] and
-                                   its unofficial slogan was "Don't
-                                 be evil."[12][13] In 2004, Google moved to its new]</p>
-    </div>
-    <div class="last">
-    <li id="List">Someday</li>
-                 <p>Google was founded by Larry Page and Sergey Brin while
-                                they were Ph.D. students at Stanford University. Together
-                                they own about 14 percent of its shares but control 56 of th
-                                e stockholder voting power through supervoting stock. They
-                                incorporated Google as a privately held company on September 4
-                                , 1998. An initial public offering followed on August 19, 2004.
-                                 Its mission statement from the outset was "to organize the world's
-                                  information and make it universally accessible and useful,"[11] and
-                                   its unofficial slogan was "Don't
-                                 be evil."[12][13] In 2004, Google moved to its new]</p>
-    </div>
-
-</div>
-
+<h3 id="1">click</h3>
+<input id="2" type="date">
 
 
 <script>
 $(document).ready(function(){
-$('#List').click(function(){
-$('.col').css('float', 'none')
-$('.col').css('margin-left', '200px')
-$('.last').css('float', 'none')
-$('.last').css('margin-left', '200px')
-    });
-});
+//$('#2').datepicker( "option", "dateFormat", 'yy-mm-dd' );
+$('#1').click(function(){
+var myDate = new Date();
+var datepicker = $('#2').val();
 
-$(document).ready(function(){
-$('#Grid').click(function(){
-$('.col').css('float', 'left')
-$('.col').css('margin-left', '2%')
-$('.last').css('float', 'right')
-$('.last').css('margin-left', '0px')
-    });
+var date = (myDate.getFullYear()) + '-' + ("0" + myDate.getMonth() + 1).slice(-2) + '-' + myDate.getDate();
+    if (date == datepicker){
+        console.log('today');
+
+    }
+var tomorrow = myDate.getDate() + 1;
+var date2 = (myDate.getFullYear()) + '-' + ("0" + myDate.getMonth() + 1).slice(-2) + '-' + tomorrow;
+if (date2 == datepicker){
+    console.log('tomorrow');
+}
+var upcoming = myDate.getDate() + 5;
+var date3 = (myDate.getFullYear()) + '-' + ("0" + myDate.getMonth() + 1).slice(-2) + '-' + upcoming;
+if (date2 <= date3 >= datepicker ){
+    console.log('upcoming');
+}
+console.log();
+
+});
 });
 </script>
-<style>
-.col
-{
 
-    margin-left: 200px;
-    width: 23%;
-    height: 300px;
-    background: #BCD42A;
-}
-.last{
-    float: right;
-    width: 23%;
-    height: 300px;
-    background: #BCD42A;
-#block2 {
-
-width: 400px;
-height: 300px;
-background: #BCD42A;
-}
-</style>
 </body>
 </html>

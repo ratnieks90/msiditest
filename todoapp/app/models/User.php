@@ -18,16 +18,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         User::create([
             'name'=>$data['name'],
             'surname'=>$data['surname'],
-            'password'=>$data['pass1']
+            'email'=>$data['email'],
+            'login'=>$data['login'],
+            'password'=>Hash::make($data['pass1'])
 
         ]);
 
 
     }
-    public static function loguser($data){
-        $user = User::where(['name' => $data['name'], 'password' => $data['pass']])->firstOrFail();
 
-        return $user;
-    }
 
 }

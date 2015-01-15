@@ -81,6 +81,7 @@
     margin-top: 15px;
     background: #d7d7d7;
     display: none;
+    border-top: 1px solid #808080;
 }
 
 #taskinfo {
@@ -112,6 +113,15 @@
     float: left;
     margin-right: 10px;
 
+
+}
+#tabs-2 .block {
+    background: #ffffff;
+    width: 300px;
+    float: left;
+    margin-right: 10px;
+
+
 }
 
 .taskcont {
@@ -124,6 +134,13 @@
 }
 .text {
     cursor: pointer;
+    width: 265px;
+    margin-left: 10px;
+    float: left;
+    height: 40px;
+    padding-top: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 #hide-1{
@@ -132,6 +149,7 @@ display: none;
 .blockinfo {
     height: 30px;
 }
+
 .addline {
     background: #f4f4f4;
     color: #2B2B2B;
@@ -140,9 +158,10 @@ display: none;
     cursor: pointer;
 }
 .add {
-    margin-left: 48%;
+    padding-left: 50%;
     margin-top: 50%;
 }
+
 .addline:hover {
     background: #a5a5a5;
 }
@@ -161,19 +180,16 @@ display: none;
     cursor: pointer;
     display: none;
 }
-.text{
-    margin-left: 20px;
-    float: left;
-}
+
 #tabs-2 {
     width: 2500px;
 }
-.foldern{
-    float: left;
-    margin-top: 0;
-}
+
+
+
 .delfolder {
     float: right;
+    margin-top: 0;
 
     font-size: small;
     color: #272727;
@@ -239,4 +255,32 @@ display: none;
 #userinfobox {
     float: right;
     margin-right: 10px;
+}
+.reg{
+    margin-top: 15px;
+}
+#regbutton {
+    float: right;
+    margin-top: 15px;
+    margin-right: 75px;
+}
+#logbutton {
+    float: right;
+    margin-top: 15px;
+    margin-right: 75px;
+}
+#errors {
+    margin-top: 70px;
+
+}
+#logerrors {
+    margin-top: 70px;
+
+}
+.errorlist {
+    display: block;
+    color: red;
+}
+.foldern{
+    cursor: pointer;
 }

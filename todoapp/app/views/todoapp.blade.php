@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset ('css/todoapp.css') }}">
     <script src="{{ asset ('js/jquery-1.11.1.min.js')}}"></script>
     <script src="{{ asset ('js/jquery-ui.min.js')}}"></script>
-    <script src="{{ asset ('js/custom.js')}}"></script>
+    <script src="{{ asset ('js/zz.js')}}"></script>
 
     <title>todo</title>
  <script>
@@ -23,33 +23,29 @@
       </div>
       <div id="loginform">
       <div id="loginbox">
-      Name<br><br>
-      <input id="logname" type="text">
-      <br><br>
-      Password<br><br>
-      <input id="logpass" type="password">
-      <br><br>
-      <button id="connect">Login</button>
+                <form id ="logform" action="login" method="post">
+                            <input class="reg" type="text" name="login" placeholder="Login" id="userlogin">
+                            <input class="reg" type="password" name="password" placeholder="Password" id="userpass">
+                            <button type="submit" id="logbutton">Login</button>
+                </form>
       </div>
-      <ul id="logerrors"></ul>
+      <ul id="logerrors" style="display: none"></ul>
       </div>
       <div id="registerform">
-      <div id="registerbox">
-            Name<br><br>
-            <input id="name"  type="text">
-            <br><br>
-            Surname<br><br>
-            <input id="surname" type="text">
-            <br><br>
-             Password<br><br>
-             <input id="pass1" type="password">
-             <br><br>
-             Repeat password<br><br>
-             <input id="pass2" type="password">
-             <br><br>
-      <button id="register">Register</button>
+            <div id="registerbox">
+                <form id ="regform" action="registration" method="post">
+                    <input class="reg" type="text" name="login" placeholder="Login" id="userlog">
+                    <input class="reg" type="text" name="name" placeholder="Name" id="username">
+                    <input class="reg" type="text" name="surname" placeholder="Surname" id="usersur">
+                    <input class="reg" type="text" name="email" placeholder="Email" id="usermail">
+                    <input class="reg" type="password" name="pass1" placeholder="Password" id="userpass1">
+                    <input class="reg" type="password" name="pass2" placeholder="Repeat password" id="userpass2">
+                    <button type="submit" id="regbutton">Register</button>
+                </form>
             </div>
-            <ul id="errors"></ul>
+            <ul id="errors" style="display: none">
+
+            </ul>
        </div>
     </div>
 </div>
@@ -68,7 +64,7 @@
                             </ul>
             </div>
             <div id="userinfobox">
-            <h4 id="userinfo">Juris Ratnieks</h4>
+            <h4 id="userinfo"></h4>
             </div>
             <div id="searchbox">
                 <input id="search" placeholder="Search tasks "type="text">
@@ -105,7 +101,7 @@
             <h2 id="backtask">go to main</h2>
             <div id="manageform">
                    <h3 class="managenames" id="notes">Notes</h3>
-                   <h3 class="managenames" id="subtasks2">Subtasks</h3>
+                   <h3 class="managenames" id="subtasks228">Subtasks</h3>
                    <h3 class="managenames" id="filename">Attachments</h3>
                   <div class="manage" id="managesubs" style="display: none">
                   <h2>Manage subtasks</h2>
@@ -131,7 +127,7 @@ for ($i=1; $i<=4; $i++)
 $days= ["Today","Tomorrow", "Upcoming", "Someday"]
 ?>
  <div class="block" id="<?php echo $i;?>">
-                 <h2><?php echo $days[$i-1];?></h2>
+                 <h2 class="folden"><?php echo $days[$i-1];?></h2>
                 <div class="addline" id="<?php echo $i;?>"><a class="add">+</a></div>
 
                     <div class="item-column">

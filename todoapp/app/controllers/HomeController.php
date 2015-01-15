@@ -8,6 +8,7 @@ class HomeController extends BaseController {
         $tasks = Task::showtasks();
 
         $folders = Folder::getfolders();
+       // return View::make('training');
         return View::make('todoapp')->with('tasks', $tasks)->with('folders', $folders);
 
     }
@@ -100,14 +101,55 @@ class HomeController extends BaseController {
     }
     public function reguser(){
         $data = Input::all();
-        User::reguser($data);
-        return $data;
+        $validator = Validator::make($data,
+            [
+                'login' => 'required|min:4|max:40|unique:users',
+                'name' => 'required|min:3|alpha|max:50',
+                'surname' => 'required|min:3|alpha',
+                'email' => 'required|min:3|email|unique:users|max:50',
+                'pass1' => 'required|min:5|max:50',
+                'pass2' => 'required|min:5|max:50|same:pass1'
+            ]);
+            if($validator->fails()){
+                 return [
+                        'sucess' => false,
+                        'errors' =>$validator->errors()];
+             }else {
+                    User::reguser($data);
+                    return ['sucess' => true];
+              }
     }
-    public function loguser(){
+    public function loguser()
+    {
         $data = Input::all();
-       $user = User::loguser($data);
-        return $user;
+        $validator = Validator::make($data,
+            [
+                'login' => 'required|min:4',
+                'password' => 'required|min:5'
+            ]);
+        if ($validator->fails()) {
+            return [
+                'sucess' => 1,
+                'errors' => $validator->errors()];
+        }
+            if (Auth::attempt(['login' => $data['login'], 'password' => $data['password']])) {
+
+                return[
+                    'sucess' => 2,
+                    'user' =>Auth::user()
+                        ];
+            } else {
+                return [
+                'sucess' => 3,
+                    'user' => 'This user not exist'];
+            }
+
+
     }
+
+
+
+
     public function updatefolder1(){
         $data = Input::all();
         if($data['colid'] < 5 ){

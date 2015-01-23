@@ -113,7 +113,9 @@
                  <input id="newnote" placeholder="add note ">
                  <ul id="notelist"></ul>
                  </div>
-                 <div class="manage" id="managefiles" style="display: none">There will be file uploading
+                 <div class="manage" id="managefiles" style="display: none">
+                <div class="drop" id="dropfiles"> Drop files here...</div>
+                <ul id="filelist"></ul>
                  </div>
             </div>
 

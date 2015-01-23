@@ -19,7 +19,17 @@
 <script>
 $(document).ready(function(){
 //$('#2').datepicker( "option", "dateFormat", 'yy-mm-dd' );
+
 $('#1').click(function(){
+$.post('delfile', function(data){});
+
+});
+
+
+
+
+
+/*$('#1').click(function(){
 var myDate = new Date();
 var datepicker = $('#2').val();
 
@@ -40,7 +50,7 @@ if (date2 <= date3 >= datepicker ){
 }
 console.log();
 
-});
+});*/
 });
 </script>
 

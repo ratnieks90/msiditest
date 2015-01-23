@@ -103,6 +103,13 @@ $(document).ready(function(){
                 $('#notelist').append('<li id="'+value.id+'">'+value['notes']+'<button class="delnote">Delete</button></li>');
             });
         });
+        $.post('filess', info, function(data){
+            $('#filename').text("Attachments ("+ data.length +")");
+            $.each(data, function(i, value){
+                var size = (value['size']/ 1000);
+                $('#filelist').append('<li class="download" id="'+value.id+'"><a class="delfiles"><img src="img/delfile.jpg" width="30" height="25" alt="post img"></a><a class="downimg"><img src="img/down.jpg" width="25" height="25" alt="post img"></a>'+value['fname']+'</li>');
+            });
+        });
 
         $('#taskcontrol').hide();
         $('#taskinfo').show();
@@ -215,6 +222,7 @@ $(document).ready(function(){
     $('#backtask').click(function(){
         $('#subtasklist').children().remove();
         $('#notelist').children().remove();
+        $('#filelist').children().remove();
         $('#day').remove();
         $('#taskcontrol').show();
         $('#taskinfo').hide();
@@ -223,6 +231,7 @@ $(document).ready(function(){
         if (e.keyCode == 27) {
             $('#subtasklist').children().remove();
             $('#notelist').children().remove();
+            $('#filelist').children().remove();
             $('#day').remove();
             $('#dayid').empty();
             $('#newtask').val('');
@@ -283,11 +292,15 @@ $(document).ready(function(){
         $.post('delfolder', folderid, function(data){
             $.each(data, function(i,value){
                 $('#6').children('.item-column').append('<div class="taskcont" id="'+value.id+'"><p class="text">'+value.taskname+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>');
+                $( ".taskcont" ).draggable({containment:'document', helper:'clone'});
             });
 
         });
+
         $(this).parent().parent().remove();
+
         return false;
+
     });
 
 //--add task function--//
@@ -419,7 +432,7 @@ $(document).ready(function(){
     $('#logform').submit(function(e){
         e.preventDefault();
 
-        var that = $(this),
+       var that = $(this),
             url = that.attr('action'),
             method = that.attr('method'),
             data = {};
@@ -500,5 +513,72 @@ $(document).ready(function(){
 
         });
     });
+    $(function(){
+        var cont = $('#dropfiles');
+        cont.on('dragover', function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            $(this).css('border', '2px solid #16a085');
+        });
+        cont.on('dragleave', function(){
+            $(this).css('border', '2px dotted #3498db');
+        });
+        cont.on('drop',function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            $(this).css('border', '2px dotted #bdc3c7');
+            var taskid = $('#taskid').text();
+            var files = e.originalEvent.dataTransfer.files;
+            var file = files[0];
+            var formdata = new FormData();
+            formdata.append('file', file);
+            formdata.append('taskid', taskid);
+            var ext = file.name.split('.').pop().toLowerCase();
+            if (file.size < 400000){
+
+              if($.inArray(ext, ['zzz','doc','pdf','docx','rar','zip','ppt','xls'])!== -1) {
+                  var request = new XMLHttpRequest();
+                  request.open('post', 'fileup', false); // false means that we will wait till script will execute
+                  request.send(formdata);
+                  $.post('getlastfile', function(data){
+                      $('#filelist').append('<li class="download" id="'+data.id+'"><a class="delfiles"><img src="img/delfile.jpg" width="30" height="25" alt="post img"></a><a class="downimg"><img src="img/down.jpg" width="25" height="25" alt="post img"></a>'+data.fname+'</li>');
+                  });
+                  var attachments = $('#filelist li').length;
+                  var attach = attachments + 1;
+                  $('#filename').text('Attachments (' +attach+')');
+              }else {
+                  alert('Wrong file extension');
+              }
+            }else {
+                alert('file size too high');
+            }
+
+
+        });
+
+    });
+
+    $('#taskinfo').delegate(".downimg", "click", function(e){
+        e.preventDefault();
+        var name = $(this).parent().text();
+          //stop the browser from following
+        window.location.href = 'uploads/'+name;
+
+
+    });
+    $('#taskinfo').delegate(".delfiles", "click", function(e) {
+        e.preventDefault();
+        var filename = $(this).parent().text();
+        var data = {};
+        data['filename'] = filename;
+        $.post('delfile', data, function(data){
+        });
+        $(this).parent().remove();
+        var attachments = $('#filelist li').length;
+        $('#filename').text('Attachments (' +attachments+')');
+
+
+    });
+
 
 });

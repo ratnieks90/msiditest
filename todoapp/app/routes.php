@@ -39,3 +39,8 @@ Route::post('updatecolumn', 'HomeController@updatefolder1');
 Route::post('addnote', 'HomeController@addnote');
 Route::post('notes', 'HomeController@getnotes');
 Route::post('delnote', 'HomeController@deletenotes');
+Route::post('fileup', 'HomeController@upfiles');
+Route::post('getfiless', 'HomeController@getfiles');
+Route::post('filess', 'HomeController@getfiles');
+Route::post('getlastfile', 'HomeController@getlast');
+Route::post('delfile', 'HomeController@delitefile');

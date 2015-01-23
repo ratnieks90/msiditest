@@ -8,7 +8,7 @@ class HomeController extends BaseController {
         $tasks = Task::showtasks();
 
         $folders = Folder::getfolders();
-       // return View::make('training');
+        //return View::make('training');
         return View::make('todoapp')->with('tasks', $tasks)->with('folders', $folders);
 
     }
@@ -176,6 +176,42 @@ class HomeController extends BaseController {
     {
         $data = Input::all();
         Note::deletenote($data);
+    }
+
+
+    public function upfiles()
+    {
+        $taskid = Input::all('taskid');
+        $file = Input::file('file');
+        $destination = 'uploads/';
+        $filesize = $file->getSize();
+        $filename = date('Y,m,d-H,i,s-').$file->getClientOriginalName();
+        $replace = [" ","%",":"];
+        $filename2 = str_replace($replace, "", $filename);
+        $data = [$taskid['taskid'], $filesize, $filename2];
+        Subnote::getsubnotes($data);
+        $file->move($destination, $filename2);
+
+
+
+
+
+                }
+    public function getfiles() {
+        $data = Input::all();
+        $files = Subnote::getfilesbyid($data);
+        return $files;
+
+    }
+    public function getlast() {
+        $lastfile = Subnote::getlastfile();
+        return $lastfile;
+    }
+    public function delitefile(){
+        $data = Input::all();
+        Subnote::deletefile($data);
+        File::delete('uploads/'.$data['filename']);
+
     }
 
 }

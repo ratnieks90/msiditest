@@ -2,3 +2,19 @@ body {
     background-image: url('../img/back.jpg');
     background-repeat: no-repeat;
 }
+.puthere {
+    height: 500px;
+    width: 400px;
+    background: red;
+    float: left;
+    margin-right: 40px;
+}
+.droped {
+    height: 50px;
+    width: 380px;
+    background: green;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+
+}

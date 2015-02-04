@@ -9,7 +9,7 @@ class HomeController extends BaseController {
 
         $folders = Folder::getfolders();
         //return View::make('training');
-        return View::make('todoapp')->with('tasks', $tasks)->with('folders', $folders);
+       return View::make('todoapp')->with('tasks', $tasks)->with('folders', $folders);
 
     }
 
@@ -133,6 +133,8 @@ class HomeController extends BaseController {
                 'errors' => $validator->errors()];
         }
             if (Auth::attempt(['login' => $data['login'], 'password' => $data['password']])) {
+                Session::put('username', Auth::user()->name);
+                Session::put('userid', Auth::user()->id);
 
                 return[
                     'sucess' => 2,
@@ -211,6 +213,15 @@ class HomeController extends BaseController {
         $data = Input::all();
         Subnote::deletefile($data);
         File::delete('uploads/'.$data['filename']);
+
+    }
+    public function logout(){
+        if(Session::has('username')){
+            return ['sucess' => true];
+        }else{
+           return ['sucess' => false];
+        }
+
 
     }
 

@@ -44,3 +44,4 @@ Route::post('getfiless', 'HomeController@getfiles');
 Route::post('filess', 'HomeController@getfiles');
 Route::post('getlastfile', 'HomeController@getlast');
 Route::post('delfile', 'HomeController@delitefile');
+Route::post('logout', 'HomeController@logout');

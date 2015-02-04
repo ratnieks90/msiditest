@@ -8,10 +8,12 @@ $(document).ready(function(){
 
     $('#reg').click(function(){
         $('#loginform').hide();
+        $('#logerrors').empty().hide();
         $('#registerform').show();
     });
     $('#log').click(function(){
         $('#registerform').hide();
+        $('#errors').empty().hide();
         $('#loginform').show();
     });
     $('#subtasks228').click(function(){
@@ -48,7 +50,9 @@ $(document).ready(function(){
             'width' : '1500px'
 
         });
-
+        $('.item-column').css({'min-height': '70px'});
+        $('.folden').css({'margin-top' : '30px'});
+        $('#tabs-2').find('.block').css({'padding-top' : '0.5px'});
     });
     $("#grid").click(function(){
         $('.block').css({'float' : 'left',
@@ -56,10 +60,16 @@ $(document).ready(function(){
             'width' : '300px',
             'margin-left' : 'none',
             'margin-right' : '10px'
-
         });
-
+        $('#tabs-2').find('.block').css({'padding-top' : '0px'});
+        $('.folden').css({'margin-top' : '19.920px'});
+        $('.item-column').css({'min-height': '600px'});
     });
+    var num1 = Math.floor((Math.random() * 10) + 1);
+    var num2 = Math.floor((Math.random() * 10) + 1);
+    var result = num1 + num2;
+    $('#question').text(num1+ " + "+num2+ " Answer is:");
+
 //--------get task info------------//
     $('#main').delegate(".text", "click", function(){
         $('#taskfolders').empty();
@@ -165,7 +175,14 @@ $(document).ready(function(){
             $('#tabs-2').find('#'+taskid).children('.text').text(taskname);
             $.post('uptaskname', task, function(data){
             });
-            alert('updated successfully');
+            //alert('updated successfully');
+
+            $('#subtasklist').children().remove();
+            $('#notelist').children().remove();
+            $('#filelist').children().remove();
+            $('#day').remove();
+            $('#taskcontrol').show();
+            $('#taskinfo').hide();
         }else {
             alert('Please enter task');
         }
@@ -284,20 +301,19 @@ $(document).ready(function(){
     });
 
 //----------------------delete folder ------------------//
-    $('#tabs-2').delegate(".delfolder", "click", function(){
-
-        var data = $(this).parent().parent().attr('id');
+    $('#tabs-2').delegate(".ziga", "click", function(){
+        var data = $(this).parent().parent().parent().attr('id');
         var folderid = {};
         folderid['id']=data;
         $.post('delfolder', folderid, function(data){
             $.each(data, function(i,value){
                 $('#6').children('.item-column').append('<div class="taskcont" id="'+value.id+'"><p class="text">'+value.taskname+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>');
-                $( ".taskcont" ).draggable({containment:'document', helper:'clone'});
+                //$( ".taskcont" ).draggable({containment:'document', helper:'clone'});
             });
 
         });
 
-        $(this).parent().parent().remove();
+        $(this).parent().parent().parent().remove();
 
         return false;
 
@@ -318,8 +334,8 @@ $(document).ready(function(){
             newtask["folder"] = folderid;
             newtask["date"] = date;
             $.post('addtask', newtask,  function(data){
-                $('#'+dayid).children('.item-column').append('<div class="taskcont" id="'+data.id+'"><p class="text">'+task+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>').find('.taskcont').draggable({containment:'document', helper:'clone'});
-                $('#'+folderid).children('.item-column').append('<div class="taskcont" id="'+data.id+'"><p class="text">'+task+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>').find('.taskcont').draggable({containment:'document', helper:'clone'});
+                $('#'+dayid).children('.item-column').append('<div class="taskcont" id="'+data.id+'"><p class="text">'+task+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>');
+                $('#'+folderid).children('.item-column').append('<div class="taskcont" id="'+data.id+'"><p class="text">'+task+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>');
             });
 
             $('#dayid').empty();
@@ -328,7 +344,7 @@ $(document).ready(function(){
             $('#addtask').hide();
 
             $('#taskcontrol').show();
-            $( ".taskcont" ).draggable({containment:'document', helper:'clone'});
+            //$( ".taskcont" ).draggable({containment:'document', helper:'clone'});
             return false;
         }else{
             alert('Please enter Task name')
@@ -370,21 +386,17 @@ $(document).ready(function(){
                 $(block).attr('id', data.id);
                 $(block).find('.taskcont').remove();
                 $(block).appendTo('#tabs-2');
-                $(block).children('.item-column').droppable({ hoverClass: 'border', tolerance:'intersect', helper: 'clone',
-                    drop: function(event, ui) {
-
-                        $(this).append(ui.draggable);
-                        var data1 = {};
-                        var colid = $(this).parent().attr('id');
-                        var taskid = ui.draggable.attr("id");
-                        data1 ['colid'] = colid;
-                        data1['taskid'] = taskid;
-                        $.post('updatecolumn', data1, function (data) {
-
-                        });
-
-                    }
-
+                $(function() {
+                    $('.item-column').sortable({
+                        connectWith: '.item-column',
+                        dropOnEmpty: true,
+                        receive:function(event, ui ){
+                            var data1 ={};
+                            data1['colid'] = $(this).parent().attr('id');
+                            data1['taskid'] = ui.item.attr('id');
+                            $.post('updatecolumn', data1, function (data) {});
+                        }
+                    });
                 });
                 $('#foldname').val('');
             });}
@@ -406,19 +418,26 @@ $(document).ready(function(){
                 name = that.attr('name'),
                 value = that.val();
             data[name] = value;
-
+            $('#errors').empty().hide();
         });
+        var c = $('#validate').val();
+        if(c == result){
         $.ajax({
             url: url,
             type: method,
             data: data,
             success: function(data){
-                $('#errors').empty().hide();
+
                 if(!data.sucess){
                     $.each(data.errors, function(i, error){
                         $('#errors').append('<li style="display: block; color: red" >'+error+'</li>');
                     });
                     $('#errors').slideDown();
+                    var num1 = Math.floor((Math.random() * 10) + 1);
+                    var num2 = Math.floor((Math.random() * 10) + 1);
+                    result = num1 + num2;
+                    $('#question').text(num1+ " + "+num2+ " Answer is:");
+                    $('#validate').val('');
                 }else {
                     $('#errors').append('<li style="display: block; color: green" >Registration successful !!!</li>');
                     $('#errors').slideDown();
@@ -426,13 +445,25 @@ $(document).ready(function(){
                 }
             }
         });
+        }if(c != result) {
+            var num1 = Math.floor((Math.random() * 10) + 1);
+            var num2 = Math.floor((Math.random() * 10) + 1);
+            result = num1 + num2;
+            $('#question').text(num1+ " + "+num2+ " Answer is:");
+            $('#errors').append('<li style="display: block; color: red" >Answer is wrong</li>');
+            $('#errors').slideDown();
+            $('#validate').val('');
+        }
         return false
     });
     //-------------------login-----------------//
+
     $('#logform').submit(function(e){
         e.preventDefault();
-
-       var that = $(this),
+       /* $( "#mainpg" ).fadeOut( 1000, function() {
+            $( "#conteiner" ).fadeIn( 400 );
+        });*/
+      var that = $(this),
             url = that.attr('action'),
             method = that.attr('method'),
             data = {};
@@ -442,21 +473,25 @@ $(document).ready(function(){
                 value = that.val();
             data[name] = value;
         });
+        $('#logerrors').empty().hide();
+
+
         $.ajax({
             url: url,
             type: method,
             data: data,
             success: function(data){
-                $('#logerrors').empty().hide();
+
                 if(data.sucess == 1){
                     $.each(data.errors, function(i, error){
                         $('#logerrors').append('<li style="display: block; color: red" >'+error+'</li>');
-                        console.log(error);
+
                     });
                     $('#logerrors').slideDown();
 
                 }if(data.sucess == 2){
                     $('#userinfo').text(data.user['name']+ ' '+ data.user['surname']);
+                    $('.reg').val('');
                     $( "#mainpg" ).fadeOut( 1000, function() {
                         $( "#conteiner" ).fadeIn( 400 );
                     });
@@ -464,10 +499,12 @@ $(document).ready(function(){
 
                     $('#logerrors').append('<li style="display: block; color: red" >'+data.user+'</li>');
                     $('#logerrors').slideDown();
+
                 }
             }
 
         });
+
 
         return false
     });
@@ -492,9 +529,33 @@ $(document).ready(function(){
             $(this).children('.delete').hide();
         }
     });
+    //---------------------logout----------------------------//
+    $('#logout').click(function(){
+        $.post('logout', function(data){
+            if(data.sucess){
+                $( "#conteiner" ).fadeOut( 1000, function() {
+                    $( "#mainpg" ).fadeIn( 300 );});
+            }else {
+                alert('Fatal error');
+            }
 
+        });
+    });
     //---------------------drag and drop function-------------------//
     $(function() {
+        $('.item-column').sortable({
+            connectWith: '.item-column',
+            dropOnEmpty: true,
+            placeholder: "ui-state-highlight",
+            receive:function(event, ui ){
+                var data1 ={};
+                data1['colid'] = $(this).parent().attr('id');
+                data1['taskid'] = ui.item.attr('id');
+                $.post('updatecolumn', data1, function (data) {});
+            }
+        });
+    });
+    /*$(function() {
         $( ".taskcont" ).draggable({containment:'document', helper:'clone'});
         $( ".item-column" ).droppable({ hoverClass: 'border', tolerance:'intersect', helper: 'clone',
             drop: function(event, ui) {
@@ -512,7 +573,7 @@ $(document).ready(function(){
             }
 
         });
-    });
+    });*/
     $(function(){
         var cont = $('#dropfiles');
         cont.on('dragover', function(e){
@@ -547,17 +608,17 @@ $(document).ready(function(){
                   var attach = attachments + 1;
                   $('#filename').text('Attachments (' +attach+')');
               }else {
-                  alert('Wrong file extension');
+                  alert('There are allowed only files with these - .doc, .docx, .rar, .zip, .ppt, .xls, extensions ');
               }
             }else {
-                alert('file size too high');
+                alert('File size too high');
             }
 
 
         });
 
     });
-
+//-------------------download file function-------------------//
     $('#taskinfo').delegate(".downimg", "click", function(e){
         e.preventDefault();
         var name = $(this).parent().text();
@@ -566,6 +627,7 @@ $(document).ready(function(){
 
 
     });
+    //------------------delite file function---------------------//
     $('#taskinfo').delegate(".delfiles", "click", function(e) {
         e.preventDefault();
         var filename = $(this).parent().text();

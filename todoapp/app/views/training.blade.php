@@ -12,20 +12,56 @@
 <body>
 
 
-<h3 id="1">click</h3>
-<input id="2" type="date">
+<div class="puthere" id="1">
+<h3 id="count">0</h3>
+<button id="show">zzzzzzz</button>
+<button id="reset">reset</button>
+</div>
+
+
 
 
 <script>
 $(document).ready(function(){
+
+
+ $('#show').click(function(){
+var counter = parseInt($("#count").text());
+                counter++;
+      $("#count").text(counter)
+    });
+    $('#reset').click(function(){
+
+          $("#count").text(0)
+        });
+
+
+
+
+
 //$('#2').datepicker( "option", "dateFormat", 'yy-mm-dd' );
 
-$('#1').click(function(){
-$.post('delfile', function(data){});
+  /*$(function() {
+     $( ".puthere" ).sortable({
+       revert: false
+     });
+     $( ".droped" ).draggable({
+       connectToSortable: ".puthere",
+      // helper: "clone",
+       revert: "invalid"
+     });
 
-});
-
-
+   });*/
+    /*$(function() {
+           $('.puthere').sortable({
+               connectWith: '.puthere',
+               dropOnEmpty: true,
+               receive:function(event, ui ){
+                           alert(ui.item.attr('id'));
+                           alert($(this).attr('id'));
+                       }
+           });
+      });*/
 
 
 

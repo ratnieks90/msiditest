@@ -1,4 +1,4 @@
-
+body { min-width: 1300px; }
 #header {
     background: #ffffff;
     height: 50px;
@@ -47,12 +47,13 @@
     margin-right: auto;
     width: 300px;
     height: 500px;
-    background: #f9fff6;
+
 }
 #mainlist {
     height: 50px;
-    background: #099cd5;
-    border-bottom: 2px solid #096197;
+    background: #09b3f1;
+
+    border-bottom: 1px solid #096197;
 }
 .mainlist {
     display: block;
@@ -62,9 +63,9 @@
     cursor: pointer;
 }
 #loginform {
-    height: 430px;
+    height: 350px;
     margin-top: 15px;
-    background: #d7d7d7;
+    background: #e1e1e1;
     border-top: 1px solid #808080;
     border-bottom: 1px solid #808080;
 }
@@ -77,9 +78,9 @@
     padding-left: 50px;
 }
 #registerform {
-    height: 430px;
+    height: 480px;
     margin-top: 15px;
-    background: #d7d7d7;
+    background: #e1e1e1;
     display: none;
     border-top: 1px solid #808080;
 }
@@ -112,6 +113,7 @@
     width: 300px;
     float: left;
     margin-right: 10px;
+
 
 
 }
@@ -160,6 +162,9 @@ display: none;
 .add {
     padding-left: 50%;
     margin-top: 50%;
+}
+#tabs-2 .addline {
+    margin-top: 17px;
 }
 
 .addline:hover {
@@ -219,7 +224,7 @@ display: none;
     min-height: 150px;
 }
 .item-column {
-    min-height: 70px;
+    min-height: 600px;
 }
 
 #info {
@@ -254,7 +259,13 @@ display: none;
 }
 #userinfobox {
     float: right;
-    margin-right: 10px;
+    margin-right: 5px;
+}
+#userinfo{
+    margin: 1px;
+}
+#logout{
+    cursor: pointer;
 }
 .reg{
     margin-top: 15px;
@@ -282,7 +293,13 @@ display: none;
     color: red;
 }
 .foldern{
+    width: 300px;
+
+}
+.ziga {
     cursor: pointer;
+    float: right;
+
 }
 #dropfiles {
     height: 100px;
@@ -308,4 +325,20 @@ display: none;
 }
 .delfiles img {
     cursor: pointer;
+}
+.ui-state-highlight {
+    border: 3px dashed #d1d1d1;
+    margin-top: 10px;
+    height: 40px;
+    background: #f6f6f6;
+}
+#question {
+margin-bottom: 5px;
+    width: 150px;
+
+}
+#question2 {
+    margin-bottom: 5px;
+    width: 150px;
+
 }

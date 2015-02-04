@@ -40,9 +40,13 @@
                     <input class="reg" type="text" name="email" placeholder="Email" id="usermail">
                     <input class="reg" type="password" name="pass1" placeholder="Password" id="userpass1">
                     <input class="reg" type="password" name="pass2" placeholder="Repeat password" id="userpass2">
+                    <h4 id="question"></h4>
+                    <input  id="validate" type="text" maxlength="2" size="2">
                     <button type="submit" id="regbutton">Register</button>
                 </form>
             </div>
+
+
             <ul id="errors" style="display: none">
 
             </ul>
@@ -64,6 +68,7 @@
                             </ul>
             </div>
             <div id="userinfobox">
+            <img id="logout" src="img/logout.png" width="25" height="25" alt="post img">
             <h4 id="userinfo"></h4>
             </div>
             <div id="searchbox">
@@ -162,7 +167,7 @@ $days= ["Today","Tomorrow", "Upcoming", "Someday"]
 
               ?>
                <div class="block" id="<?php echo $folders[$i-1]['id'];?>">
-                               <div class="blockinfo"><h2 class="foldern"><?php echo $folders[$i-1]['folder']?></h2><p class="delfolder" id="<?php echo $folders[$i-1]['folder']?>">Del</p></div>
+                               <div class="blockinfo"><h2 class="foldern"><?php echo $folders[$i-1]['folder']?></h2><p class="delfolder" id="<?php echo $folders[$i-1]['folder']?>"><img class="ziga" src="img/delfolder.jpg" width="20" height="20" alt="post img"></p></div>
                               <div class="addline" id="1"><a class="add">+</a></div>
 
                                   <div class="item-column">

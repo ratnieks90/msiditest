@@ -22,7 +22,7 @@ class Note extends Eloquent implements UserInterface, RemindableInterface {
     }
     public static function addnote($data)
     {
-        Note::create([
+        Note::wherwe([
             'notes' => $data['note'],
             'taskid' => $data['taskid']
 

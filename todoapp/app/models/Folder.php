@@ -40,5 +40,10 @@ class Folder extends Eloquent implements UserInterface, RemindableInterface {
         $fold = Folder::orderBy('id', 'DESC')->first();
         return $fold;
     }
+    public static function savepos($data){
+        Folder::where('id', '=', $data['folders'])->update([
+            'positions'=>$data['tasks']
+        ]);
+    }
 
 }

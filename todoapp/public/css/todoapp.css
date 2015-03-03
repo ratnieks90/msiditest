@@ -96,12 +96,15 @@ body { min-width: 1300px; }
     background: #ffffff;
 }
 #taskcontainer {
+    margin-right: auto;
+    margin-left: auto;
 
-    margin-left: 40%;
+    height: 400px;
+    width: 1050px;
 
 }
-#newtask {
-    margin-top:100px
+#newtask:focus {
+    outline: 0;
 }
 #tabs-1 {
 
@@ -170,8 +173,15 @@ display: none;
 .addline:hover {
     background: #a5a5a5;
 }
+
 #gotomain {
+    opacity: 0.4;
     cursor: pointer;
+    margin-top: 50px;
+    margin-left: 1100px;
+}
+#gotomain:hover {
+    opacity: 1;
 }
 #foldid{
     display: none;
@@ -214,10 +224,12 @@ display: none;
 }
 #backtask{
     cursor: pointer;
-    float:right;
-
+    margin-left: 960px;
+    opacity: 0.4;
 }
-
+#backtask:hover {
+    opacity: 1;
+}
 
 .border {
     border: 1px solid #000000;
@@ -228,16 +240,19 @@ display: none;
 }
 
 #info {
-    height: 70px;
-    width: 900px;
-    margin-top: 50px;
+
+    height: 200px;
+    width: 1000px;
+    margin-top: 25px;
     margin-left: auto;
     margin-right: auto;
 }
 #manageform {
-    height: 600px;
-    width: 900px;
+
+    height: 550px;
+    width: 1000px;
     background: #ffffff;
+
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
@@ -250,10 +265,10 @@ display: none;
     color: #099acb;
 }
 .manage {
-    padding-top: 100px;
+    padding-top: 75px;
     width: 900px;
     height: 450px;
-    border: 1px solid #d0d0d0;
+    border-top: 1px solid #808080;
     padding-left: 50px;
 
 }
@@ -261,8 +276,9 @@ display: none;
     float: right;
     margin-right: 5px;
 }
-#userinfo{
+.userinfo{
     margin: 1px;
+    cursor: pointer;
 }
 #logout{
     cursor: pointer;
@@ -341,4 +357,256 @@ margin-bottom: 5px;
     margin-bottom: 5px;
     width: 150px;
 
+}
+#newtask {
+    margin-top: 5px;
+    margin-left: 5px;
+    height: 70px;
+    width: 1000px;
+    padding:10px ;
+    font-size: 40px;
+    resize: none;
+    border: 0px solid;
+}
+#titlebox {
+    border: 1px solid #cacaca;
+    margin-top:100px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100px;
+    width: 1130px;
+}
+#addtaskbutton2 {
+    float: right;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 30px;
+    cursor: pointer;
+    display: none;
+}
+#folderlist3 {
+    opacity: 0;
+    font-size: 16px;
+    height: 40px;
+    width: 100px;
+}
+#folderlist3:focus {
+    outline: 0;
+}
+#folderlist4 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    font-size: 20px;
+    font-family: times, serif;
+    height: 40px;
+    width: 140px;
+}
+.alert {
+    margin-left: 20px;
+    position: absolute;
+    margin-top: 25px;
+    cursor: pointer;
+    opacity: 0.2;
+}
+.switch {
+    opacity: 1;
+}
+.color {
+    border-left: 2px solid red;
+
+}
+
+#update {
+    margin-top: 5px;
+    margin-left: 5px;
+    height: 70px;
+    width: 950px;
+    padding:10px ;
+    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 50px;
+    resize: none;
+    border: 0px solid;
+}
+#update:focus {
+    outline: 0;
+}
+#features {
+    height: 80px;
+    width: 970px;
+    margin-left: 5px;
+
+}
+.notes {
+    height: 385px;
+    width: 800px;
+    background-image: -webkit-linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px);
+    background-image: -moz-linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px);
+    background-image: -ms-linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px);
+    background-image: -o-linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px);
+    background-image: linear-gradient(white, white 30px, #ccc 30px, #ccc 31px, white 31px);
+    background-size: 100% 31px;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    line-height: 31px;
+    font-family: Arial, Helvetica, Sans-serif;
+    padding: 8px;
+    resize: none;
+}
+
+.notes:focus {
+    outline: none;
+}
+#subtaskwraper {
+    min-height: 500px;
+    width: 801px;
+    border: 1px solid #999999;
+}
+#newsubblock {
+    height: 50px;
+    width: 800px;
+    border-bottom: 1px solid #999999;
+
+}
+#newsub {
+    height: 20px;
+    width: 700px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    margin-left: 20px;
+    border: 0px solid;
+
+
+}
+#newsub:focus {
+    outline: none;
+}
+#addededsubs {
+    margin-top: 0px;
+    width: 800px;
+
+}
+#subslist {
+    margin-top: 0px;
+    list-style-type: none;
+    padding: 0px;
+}
+.subcontainer {
+    height: 50px;
+    width: 800px;
+    border-bottom: 1px solid #999999;
+}
+.subcontainer:hover {
+    border: 1px solid #000000;
+}
+.subname {
+    height: 20px;
+    width: 700px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    margin-left: 20px;
+    border: 0px solid;
+
+}
+.subname:focus {
+    outline: none;
+}
+.delsubs {
+    margin-left: 30px;
+    position: absolute;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+#userinfoblock
+{
+    height: 1000px;
+    width: 50px;
+    float: left;
+    background: #e1e1e1;
+    margin-right: 10px;
+}
+#usercontrol {
+    display: none;
+    width: 600px;
+    height: 700px;
+    background: #ffffff;
+    position: absolute;
+    z-index: 999;
+    top: 50%;
+    left: 50%;
+    margin-left: -300px;
+    margin-top: -350px;
+    border: 1px solid #e0e0e0;
+}
+#hover {
+    display: none;
+    width: 100%;
+    height: 200%;
+    background: #fbf8ff;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 998;
+    opacity: 0.8;
+    cursor: pointer;
+}
+#profileimg {
+    position: absolute;
+    margin-left: 225px;
+    margin-right: 225px;
+}
+#imguploadbox {
+    height: 70px;
+    width: 500px;
+    margin-left: 50px;
+}
+#imgerors {
+color: red;
+}
+
+#picture {
+    padding-top: 40px;
+    margin-top: 15px;
+    height: 200px;
+    width: 600px;
+}
+#userinfomanage {
+    width: 600px;
+    height: 300px;
+
+}
+.edit {
+    width: 590px;
+    height: 70px;
+    margin-top: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-top: 1px solid #a3a3a3;
+    border-bottom: 1px solid #a3a3a3;
+}
+.editp {
+    border: 0px solid;
+    height: 40px;
+    width: 400px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 10px;
+    font-size: 20px;
+    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+}
+.editp:focus {
+    outline: 0;
+}
+.updtimg {
+    display: none;
+    position: absolute;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 70px;
+    cursor: pointer;
+}
+#updterors {
+    color: red;
 }

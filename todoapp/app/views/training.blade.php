@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{{ asset ('css/login.css') }}">
     <script src="{{ asset ('js/jquery-1.11.1.min.js')}}"></script>
     <script src="{{ asset ('js/jquery-ui.min.js')}}"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 
     <title>todo</title>
 
@@ -12,28 +13,64 @@
 <body>
 
 
-<div class="puthere" id="1">
-<h3 id="count">0</h3>
-<button id="show">zzzzzzz</button>
-<button id="reset">reset</button>
-</div>
+         <div id="tabs-2">
+              <?php
+               $lenght = count($folders);
+              for ($i=1; $i<=$lenght; $i++)
+              {
+
+                $array = explode(',' ,$folders[$i-1]['positions']);
+                $a =  implode(',',$array);
+              ?>
+               <div class="block" id="<?php echo $folders[$i-1]['id'];?>">
+                               <div class="blockinfo"><h2 class="foldern"><?php echo $folders[$i-1]['folder']?></h2></div>
 
 
+                                  <div class="item-column">
+              <?php
+
+                  foreach ($tasks as $task=>$row){
 
 
+                  if ($row['folderid']==$folders[$i-1]['id']){
+                  if ($row['status'] == 1){
+                          ?>
+                          <div class="taskcont color" id="<?php echo $row['id'];?>">
+                          <?php
+                          }
+                          else {
+                          ?>
+                          <div class="taskcont" id="<?php echo $row['id'];?>">
+                          <?php
+                          }
+                          ?>
+
+                           <p class="text"><?php echo $row['taskname'];?></p>
+                      </div>
+                  <?php
+                  }
+              }
+              ?>
+                  </div>
+                </div>
+                <p><?php echo $a;?></p>
+                 <?php
+                  }
+              ?>
 <script>
+
 $(document).ready(function(){
 
+$('#getvalue').click(function(){
+    $('#move').appendTo('#second');
+});
+$("#zz").focus(function() {
+    console.log('in');
+}).blur(function() {
+var text = $('#zz').val();
+    console.log(text);
+});
 
- $('#show').click(function(){
-var counter = parseInt($("#count").text());
-                counter++;
-      $("#count").text(counter)
-    });
-    $('#reset').click(function(){
-
-          $("#count").text(0)
-        });
 
 
 

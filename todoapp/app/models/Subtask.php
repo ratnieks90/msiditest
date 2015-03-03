@@ -38,5 +38,10 @@ class Subtask extends Eloquent implements UserInterface, RemindableInterface {
 
         Subtask::where('taskid', '=', $id['id'])->delete();
     }
+    public static function updatesub($data){
+        Subtask::where('id', '=', $data['subsid'])->update([
+            'subtask'=>$data['subtask']
+        ]);
+    }
 
 }

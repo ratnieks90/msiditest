@@ -1,0 +1,136 @@
+
+body {
+    font-family: tahoma;
+    font-size: 12px;
+    background: #333;
+    color: #fff;
+
+}
+#body {
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+#container {
+    width: 300px;
+    height: 600px;
+
+}
+#login {
+    background: white;
+    padding: 10px;
+    width: 300px;
+    border-radius: 10px;
+    height: 300px;
+    color: #000000;
+    position: absolute;
+
+}
+
+#register {
+     background: white;
+     padding: 10px;
+     width: 300px;
+     border-radius: 10px;
+     height: 600px;
+     color: #000000;
+     position: absolute;
+
+ }
+
+#logform, #regform {
+ margin-top: 20px;
+
+}
+.reglabel {
+    float: left;
+    margin-top: 4px;
+    font-size: 13px;
+}
+.row {
+    width: 260px;
+    height: 30px;
+
+    margin-top: 5px;
+}
+.error {
+    width: 260px;
+    color: red;
+
+}
+.errorname {
+    float: right;
+}
+#capchavalid {
+    height: 80px;
+    margin-bottom: 20px;
+}
+#captcha {
+    border: solid 1px #808080;
+    margin-bottom: 10px;
+}
+#refresh {
+    float: right;
+    margin-top: 6px;
+    cursor: pointer;
+}
+input {
+    background: #fff;
+    color: #333;
+    padding: 5px;
+    font-family: cursive;
+    font-size: 12px;
+    border: none;
+    box-shadow: 0 0 5px #000000;
+    border-radius: 5px;
+    float: right;
+}
+#regbutton {
+    float: right;
+    cursor: pointer;
+    margin-top: 15px;
+}
+#regbutton:hover {
+    background: #096197;
+    color: white;
+}
+#logbutton {
+    box-shadow: 0 0 4px #000000;
+    cursor: pointer;
+}
+#logbutton:hover {
+    background: #096197;
+    color: white;
+}
+#gotoreg, #gotolog {
+    background: #099cd5;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+    font-size: 15px;
+    font-family: cursive;
+    margin-top: 70px;
+
+}
+#gotolog{
+margin-left: 70px;
+}
+a {
+    text-decoration: none;
+    color: white;
+}
+#gotoreg:hover {
+    background: #096197;
+    cursor: pointer;
+}
+#gotolog:hover {
+    background: #096197;
+    cursor: pointer;
+}
+#sucreg{
+    color: #2cdd5f;
+}
+
+

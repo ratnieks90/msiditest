@@ -4,16 +4,46 @@ class HomeController extends BaseController {
 
 	public function index()
     {
+      if (Auth::user()){
+            return Redirect::to('/app');}
 
-        $tasks = Task::showtasks();
+else {
 
+        return View::make('main');
+
+    }
+       /* $tasks = Task::showtasks();
         $folders = Folder::getfolders();
-        //return View::make('training');
-       return View::make('todoapp')->with('tasks', $tasks)->with('folders', $folders);
+        return View::make('training')->with('tasks', $tasks)->with('folders', $folders);;*/
+    }
+    public function reguser()
+    {
+        if (Auth::user()){
+            return Redirect::to('/app');}
+        // $tasks = Task::showtasks();
+        else {
+            // $tasks = Task::showtasks();
 
+            // $folders = Folder::getfolders();
+            return View::make('regpage');
+        }
+        //return View::make('todoapp')->with('tasks', $tasks)->with('folders', $folders);
+
+    }
+    public function app (){
+         $tasks = Task::showtasks();
+
+         $folders = Folder::getfolders();
+        return View::make('todoapp')->with('tasks', $tasks)->with('folders', $folders);
     }
 
 
+public function myapp (){
+    $tasks = Task::showtasks();
+
+    $folders = Folder::getfolders();
+    return View::make('todoapp')->with('tasks', $tasks)->with('folders', $folders);
+}
 
     public function showtasks(){
         $data = Task::showtasks();
@@ -88,6 +118,11 @@ class HomeController extends BaseController {
 
         return $last;
     }
+    public function updatesubtask() {
+        $data = Input::all();
+        Subtask::updatesub($data);
+        return $data;
+    }
     public function getfold(){
         $data = Input::all();
         $folders = Folder::getfolders();
@@ -99,28 +134,38 @@ class HomeController extends BaseController {
         $folder = Folder::getlastfolder();
         return $folder;
     }
-    public function reguser(){
-        $data = Input::all();
-        $validator = Validator::make($data,
+    public function reguser2(){
+       $data = Input::all();
+       $validator = Validator::make($data,
             [
                 'login' => 'required|min:4|max:40|unique:users',
-                'name' => 'required|min:3|alpha|max:50',
-                'surname' => 'required|min:3|alpha',
+                'username' => 'required|min:3|alpha|max:50',
+                'usersurname' => 'required|min:3|alpha',
                 'email' => 'required|min:3|email|unique:users|max:50',
                 'pass1' => 'required|min:5|max:50',
-                'pass2' => 'required|min:5|max:50|same:pass1'
-            ]);
+                'pass2' => 'required|min:5|max:50|same:pass1',
+                'code' => 'required|captcha'
+            ],
+           [
+               'captcha' => 'Invalid captcha'
+            ]
+       );
             if($validator->fails()){
-                 return [
-                        'sucess' => false,
-                        'errors' =>$validator->errors()];
+                return Redirect::back()->with('errors', $validator->errors())->withInput(Input::except('pass1', 'pass2'));
+
+
              }else {
                     User::reguser($data);
-                    return ['sucess' => true];
+                return Redirect::to('/registration')->with('message','Registration was successful!!!');
               }
+
+
     }
     public function loguser()
     {
+
+
+
         $data = Input::all();
         $validator = Validator::make($data,
             [
@@ -128,27 +173,25 @@ class HomeController extends BaseController {
                 'password' => 'required|min:5'
             ]);
         if ($validator->fails()) {
-            return [
-                'sucess' => 1,
-                'errors' => $validator->errors()];
+            return Redirect::back()->with('errors', $validator->errors())->withInput();
         }
-            if (Auth::attempt(['login' => $data['login'], 'password' => $data['password']])) {
-                Session::put('username', Auth::user()->name);
-                Session::put('userid', Auth::user()->id);
 
-                return[
-                    'sucess' => 2,
-                    'user' =>Auth::user()
-                        ];
-            } else {
-                return [
-                'sucess' => 3,
-                    'user' => 'This user not exist'];
-            }
+        if (Auth::attempt(['login' => $data['login'], 'password' => $data['password']])) {
+            Session::put('username', Auth::user()->login);
+            Session::put('userid', Auth::user()->id);
+            return Redirect::to('/app');
+        } else {
+            return Redirect::back()->withMessage('Login or password is wrong')->withInput();
+        }
+
 
 
     }
-
+    public function doLogout()
+    {
+        Auth::logout(); // log the user out of our application
+        return Redirect::to('/'); // redirect the user to the login screen
+    }
 
 
 
@@ -163,11 +206,9 @@ class HomeController extends BaseController {
         }
 
     }
-    public function addnote(){
+    public function noteupdate(){
         $data = Input::all();
-        Note::addnote($data);
-        $note = Note::getlastnote();
-        return $note;
+        Task::updatenote($data);
     }
     public function getnotes(){
         $data = Input::all();
@@ -193,12 +234,35 @@ class HomeController extends BaseController {
         $data = [$taskid['taskid'], $filesize, $filename2];
         Subnote::getsubnotes($data);
         $file->move($destination, $filename2);
+    }
+    public function profileimg() {
+        $id = Input::all('profileid');
+        $data['zz'] = $id['profileid'];
+        $validator = Validator::make(Input::all(),[
+                'image'=> 'mimes:png,jpg,jpeg|max:1000'
+        ]) ;
+        if($validator->fails()){
+            return ['success'=> false,
+                    'error'=>$validator->errors()->toArray()
+                    ];
+        }else {
 
+            $file = (Input::file('image'));
+            $destination = 'profileimg/';
+            $filename = date('Y,m,d-H,i,s-').$file->getClientOriginalName();
+            $upload_success = $file->move($destination, $filename);
+            if($upload_success) {
+            $data['img'] = $filename;
+            User::addimg($data);
+            return ['success'=> true,
+                    'error'=> 'image uploaded sucessfuly',
+                    'img'=> $filename
+            ];
+            }
+        }
 
+    }
 
-
-
-                }
     public function getfiles() {
         $data = Input::all();
         $files = Subnote::getfilesbyid($data);
@@ -217,6 +281,7 @@ class HomeController extends BaseController {
     }
     public function logout(){
         if(Session::has('username')){
+            Session::flush();
             return ['sucess' => true];
         }else{
            return ['sucess' => false];
@@ -224,5 +289,83 @@ class HomeController extends BaseController {
 
 
     }
+    public function kapcha() {
+        $data = Input::all();
+        $validator = Validator::make($data,
+            [
+                'kapcha' => 'required|captcha',
 
+            ]);
+        if ($validator->fails()) {
+            return [
+                'errors' => $validator->errors()];
+        }else return 'ziga';
+    }
+
+    public function getfolders2(){
+
+            $folders = Folder::getfolders();
+            return $folders;
+        }
+    public function status() {
+        $data = Input::all();
+        $task = Task::gettask($data);
+
+        if ($task['status'] == 0) {
+            $data['status'] = 1;
+            Task::updatestatus($data);
+        }if ($task['status'] == 1){
+            $data['status'] = 0;
+            Task::updatestatus($data);
+        }
+    }
+    public function foldupdt() {
+        $data = Input::all();
+        Task::update_task_folder($data);
+
+    }
+    public function savesorting()
+    {
+        $data = Input::all();
+       $a =  implode(',',$data['tasks']);
+        $data['tasks'] = $a;
+        Folder::savepos($data);
+        $order = Folder::getfolders();
+        $array = explode(',' ,$order[0]['positions']);
+
+        return $array;
+    }
+    public function getuserinfo2() {
+        $data = Input::all();
+        $user = User::getuserinfo($data);
+        return $user;
+
+    }
+    public function updtname() {
+        $data = Input::all();
+        User::updtname($data);
+
+    }
+    public function updtsurname() {
+        $data = Input::all();
+        User::updtsurname($data);
+
+    }
+    public function updtemail()
+    {
+        $data = Input::all();
+        $validator = Validator::make(Input::all(), [
+            'email' => 'required|min:3|email|unique:users|max:50',
+        ]);
+        if ($validator->fails()) {
+            return ['success' => false,
+                'error' => $validator->errors()->toArray()
+            ];
+        } else {
+            User::updtemail($data);
+            return ['success' => true,
+                'error' => 'ok'
+            ];
+        }
+    }
 }

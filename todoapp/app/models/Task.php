@@ -24,7 +24,6 @@ class Task extends Eloquent implements UserInterface, RemindableInterface {
             'taskname'=>$data['task'],
             'dayid'=>$data['day'],
             'folderid'=>$data['folder'],
-            'date'=>$data['date']
 
         ]);
         return $data;
@@ -82,6 +81,21 @@ class Task extends Eloquent implements UserInterface, RemindableInterface {
         Task::where('id', '=', $data['taskid'])->update([
             'folderid' => $data['colid']
 
+        ]);
+    }
+
+    public static function updatestatus ($data){
+
+        Task::where('id', '=', $data['id'])->update([
+            'status'=>$data['status']
+
+        ]);
+
+    }
+    public static function updatenote($data){
+
+        Task::where('id', '=', $data['taskid'])->update([
+            'note'=>$data['note']
         ]);
     }
 }

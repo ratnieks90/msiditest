@@ -1,9 +1,32 @@
 $(document).ready(function(){
-    $('#conteiner').hide();
+    //$('#conteiner').hide();
     $('#tabs-2').hide();
     $('#newfolder').hide();
 
+    $("#update").keypress(function(event) {
+        if(event.which == '13') {
+            return false;
+        }
+    });
+    $("#newtask").keypress(function(event) {
+        if(event.which == '13') {
+            return false;
+        }
+    });
+    $("#newnotes").keyup(function(event) {
+        if(event.which == '27') {
+            return false;
+        }
+    });
+    $(".editp").keyup(function() {
+        $(this).parent().children('.updtimg').show(140);
 
+    });
+    $('#taskinfo').on('keyup', '.subname', function(event){
+        if(event.which == '27') {
+            return false;
+        }
+    });
 
 
     $('#reg').click(function(){
@@ -72,13 +95,22 @@ $(document).ready(function(){
 
 //--------get task info------------//
     $('#main').delegate(".text", "click", function(){
-        $('#taskfolders').empty();
+        $('#folderlist4').empty();
+        $('#newsub').val('');
         var info = {};
         info ['id'] = $(this).parent().attr('id');
         $.post('taskinfo', info, function(data){
             $('#taskid').text(data.id);
+            var task = $('#tabs-1').find('#'+data.id);
+            if (task.is('.color')) {
+                $('.alert').addClass('switch')
+            }else {
+                $('.alert').removeClass('switch');
+            }
+            $('.alert').attr('id', data.id);
             $('#update').val(data.taskname);
-            if(data.dayid ==1){
+            $('#newnotes').val(data.note);
+            /*if(data.dayid ==1){
                 $('#tasknameupdt').append('<h3 id="day">Today</h3>');
             }
             if(data.dayid ==2){
@@ -87,32 +119,25 @@ $(document).ready(function(){
                 $('#tasknameupdt').append('<h3 id="day">Upcoming</h3>');
             }if(data.dayid ==4){
                 $('#tasknameupdt').append('<h3 id="day">Someday</h3>');
-            }
-            /*var foldid = data.folderid;
+            }*/
+            var foldid = data.folderid;
              $.post('getfolder', foldid, function(info){
-             console.log(info);
              $.each(info, function(i, value){
-             if(foldid == value.id){
-             $('#taskfolders').append('<input class="check" type="radio" name="sex" value="'+value.id+'" checked>'+value.folder+'<br>');
-             }else {
-             $('#taskfolders').append('<input class="check" type="radio" name="sex" value="'+value.id+'">'+value.folder+'<br>');
-             }
-
+                 if (foldid == value.id){
+                     $('#folderlist4').append('<option value="'+value.id+'" selected>'+value.folder+'</option>');
+                 }else{
+                     $('#folderlist4').append('<option value="'+value.id+'">'+value.folder+'</option>');
+                 }
              });
-             });*/
+             });
         });
         $.post('subtasks', info, function(data){
             $('#subtasks228').text("Subtasks ("+ data.length +")");
             $.each(data, function(i, value){
-                $('#subtasklist').append('<li id="'+value.id+'">'+value.subtask+'<button class="delsub">Delete</button></li>');
+                $('#subslist').append('<li><div class="subcontainer" id="'+value.id+'"><input type="text" class="subname" value="'+value.subtask+'"><img class="delsubs" src="img/subdone.jpg" width="15" height="15" alt="post img"></div></li>');
             });
         });
-        $.post('notes', info, function(data){
-            $('#notes').text("Notes ("+ data.length +")");
-            $.each(data, function(i, value){
-                $('#notelist').append('<li id="'+value.id+'">'+value['notes']+'<button class="delnote">Delete</button></li>');
-            });
-        });
+
         $.post('filess', info, function(data){
             $('#filename').text("Attachments ("+ data.length +")");
             $.each(data, function(i, value){
@@ -123,17 +148,21 @@ $(document).ready(function(){
 
         $('#taskcontrol').hide();
         $('#taskinfo').show();
+        $("#update").focus();
     });
 
 //-----------delete subtask---------------//
-    $('#taskinfo').delegate(".delsub", "click", function(){
+    $('#taskinfo').delegate(".delsubs", "click", function(){
         var subid = {};
         subid['id'] = $(this).parent().attr('id');
         $.post('delsubtask', subid, function(data){
 
         });
-        $(this).parent().remove();
-        var sub = $('#subtasklist li').length;
+
+        $(this).parent().parent().remove();
+        var sub = $('#subslist li').length;
+
+        console.log(sub);
         $('#subtasks228').text('Subtasks (' +sub+')');
     });
 
@@ -145,14 +174,14 @@ $(document).ready(function(){
         info['subtask'] = $('#newsub').val();
         if(info['subtask'] != ""){
             $.post('addsub', info, function(data){
-                $('#subtasklist').append('<li id="'+data.id+'">'+data.subtask+'<button class="delsub">Delete</button></li>');
+                $('#subslist').append('<li><div  class="subcontainer" id="'+data.id+'"><input type="text" class="subname" value="'+data.subtask+'"><img class="delsubs" src="img/subdone.jpg" width="15" height="15" alt="post img"></div></li>');
             });
             $('#newsub').val('');
         }else {
             alert('Please enter subtask');
         }
-        var sub = $('#subtasklist li').length;
-        var subs = sub + 1
+        var sub = $('#subslist li').length;
+        var subs = sub + 1;
         $('#subtasks228').text('Subtasks (' +subs+')');
         return false;
     });
@@ -164,31 +193,40 @@ $(document).ready(function(){
     });
 
 //----------updatetask---------//
-    $('#updttask').click(function(){
-        var task = {};
-        var taskid = $('#taskid').text();
-        var taskname = $('#update').val();
-        if(taskname != ""){
-            task['id'] = taskid;
-            task['taskname'] = taskname;
-            $('#'+taskid).children('.text').text(taskname);
-            $('#tabs-2').find('#'+taskid).children('.text').text(taskname);
-            $.post('uptaskname', task, function(data){
-            });
-            //alert('updated successfully');
+    //$('#updttask').click(function(){
+        $('#update').bind("enterKey",function(){
+            var task = {};
+            var taskid = $('#taskid').text();
+            var taskname = $('#update').val();
+            if(taskname != ""){
+                task['id'] = taskid;
+                task['taskname'] = taskname;
+                $('#'+taskid).children('.text').text(taskname);
+                $('#tabs-1').find('#'+taskid).children('.text').text(taskname);
+                $('#tabs-2').find('#'+taskid).children('.text').text(taskname);
+                $.post('uptaskname', task, function(data){
+                });
+                //alert('updated successfully');
 
-            $('#subtasklist').children().remove();
-            $('#notelist').children().remove();
-            $('#filelist').children().remove();
-            $('#day').remove();
-            $('#taskcontrol').show();
-            $('#taskinfo').hide();
-        }else {
-            alert('Please enter task');
+                $('#subslist').children().remove();
+                $('#notelist').children().remove();
+                $('#filelist').children().remove();
+                $('#day').remove();
+                $('#taskcontrol').show();
+                $('#taskinfo').hide();
+            }else {
+                alert('Please enter task');
+            }
+
+            return false;
+        });
+    $('#update').keyup(function(e){
+        if(e.keyCode == 13)
+        {
+            $(this).trigger("enterKey");
         }
-
-        return false;
     });
+
     //---------------addnote---------------------//
     $('#newnote').bind("enterKey",function(){
         var info = {};
@@ -237,30 +275,37 @@ $(document).ready(function(){
     });
 
     $('#backtask').click(function(){
-        $('#subtasklist').children().remove();
+        $('#subslist').children().remove();
         $('#notelist').children().remove();
         $('#filelist').children().remove();
         $('#day').remove();
+        $('#update').val('');
         $('#taskcontrol').show();
+        $('.alert').removeClass('switch');
         $('#taskinfo').hide();
     });
     $(document).keyup(function(e) {
         if (e.keyCode == 27) {
-            $('#subtasklist').children().remove();
+            $('#subslist').children().remove();
             $('#notelist').children().remove();
             $('#filelist').children().remove();
             $('#day').remove();
             $('#dayid').empty();
             $('#newtask').val('');
+            $('.alert').removeClass('switch');
             $('.check').removeAttr('checked');
             $('#taskcontrol').show();
             $('#taskinfo').hide();
+            $('#folderlist3').css('opacity', '0' );
+            $('#addtaskbutton2').hide();
             $('#addtask').hide();
         }
     });
 //----------add task ---------//
     $('#main').delegate(".addline", "click", function(){
         $('#folderlist2').empty();
+        $('#folderlist3').empty();
+
         var folderid = $(this).parent().attr('id');
         console.log(folderid);
         $.post('folderlist', function(data){
@@ -269,17 +314,17 @@ $(document).ready(function(){
                 var folder = value.folder;
                 var idnum = value.id;
                 if (folderid == idnum){
-                    $('#folderlist2').append('<input class="check2" type="radio" name="sex" value="'+idnum+'" checked>'+folder+'<br>');
+                    $('#folderlist3').append('<option value="'+value.id+'" selected>'+value.folder+'</option>');
                 }else{
-//$('#folderlist').append('<li class="folder"><input class="check" type="radio"><p id="foldid">'+idnum+'</P>'+folder+'</li>');
-                $('#folderlist2').append('<input class="check2" type="radio" name="sex" value="'+idnum+'">'+folder+'<br>');
+                    $('#folderlist3').append('<option value="'+value.id+'">'+value.folder+'</option>');
                 }
             });
         });
-        var id = $(this).attr('id')
+        var id = $(this).attr('id');
         $('#dayid').append(id);
         $('#taskcontrol').hide();
         $('#addtask').show();
+        $("#newtask").focus();
     });
 
 
@@ -288,6 +333,8 @@ $(document).ready(function(){
         $('#newtask').val('');
         $('.check').removeAttr('checked');
         $('#taskcontrol').show();
+        $('#addtaskbutton2').hide();
+        $('#folderlist3').css('opacity', '0' );
         $('#addtask').hide();
 
     });
@@ -320,19 +367,16 @@ $(document).ready(function(){
     });
 
 //--add task function--//
-    $('#addtaskbutton').click(function(){
+    $('#addtaskbutton2').click(function(){
         var dayid = $('#dayid').text();
 //var folderid = $('.check:checked').parent().children('#foldid').text();
-        var folderid = $('.check2:checked').attr('value');
+        var folderid = $('option:selected').attr('value');
         var task = $('#newtask').val();
-        var date = $('#dateadd').val();
-
         if (task > ""){
             var newtask = {};
             newtask["task"] = task;
             newtask["day"] = dayid;
             newtask["folder"] = folderid;
-            newtask["date"] = date;
             $.post('addtask', newtask,  function(data){
                 $('#'+dayid).children('.item-column').append('<div class="taskcont" id="'+data.id+'"><p class="text">'+task+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>');
                 $('#'+folderid).children('.item-column').append('<div class="taskcont" id="'+data.id+'"><p class="text">'+task+'</p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a></div>');
@@ -342,7 +386,8 @@ $(document).ready(function(){
             $('#newtask').val('');
             $('.check2').removeAttr('checked');
             $('#addtask').hide();
-
+            $('#addtaskbutton2').hide();
+            $('#folderlist3').css('opacity', '0' );
             $('#taskcontrol').show();
             //$( ".taskcont" ).draggable({containment:'document', helper:'clone'});
             return false;
@@ -354,7 +399,7 @@ $(document).ready(function(){
     $('#newtask').keyup(function(e){
         if(e.keyCode == 13)
         {
-            $('#addtaskbutton').click();
+            $('#addtaskbutton2').click();
         }
     });
 
@@ -374,6 +419,19 @@ $(document).ready(function(){
         }
 
     });
+
+//------------------- show addtask button and selectfolder --------------------//
+    $('#newtask').keyup(function (){
+        var text = $('#newtask').val();
+        if (text > ""){
+            $('#addtaskbutton2').show(250);
+            $('#folderlist3').css('opacity', '1' );
+        }else {
+            $('#addtaskbutton2').hide();
+            $('#folderlist3').css('opacity', '0' );
+        }
+    });
+
     //---------------------add new folder--------------------//
     $('#addfolder').click(function(){
         if ($('#foldname').val()>""){
@@ -529,24 +587,29 @@ $(document).ready(function(){
             $(this).children('.delete').hide();
         }
     });
-    //---------------------logout----------------------------//
-    $('#logout').click(function(){
-        $.post('logout', function(data){
-            if(data.sucess){
-                $( "#conteiner" ).fadeOut( 1000, function() {
-                    $( "#mainpg" ).fadeIn( 300 );});
-            }else {
-                alert('Fatal error');
-            }
 
-        });
-    });
+
+    //---------------------logout----------------------------//
+   /* $('#logout').click(function(){
+        $.post('logout'
+        );
+        window.location = "http://localhost/msidi/todoapp/public/"
+    });*/
     //---------------------drag and drop function-------------------//
     $(function() {
         $('.item-column').sortable({
             connectWith: '.item-column',
             dropOnEmpty: true,
             placeholder: "ui-state-highlight",
+            update: function(event, ui){
+                var obj = {};
+                var columnid = $(this).parent().attr('id');
+                obj['tasks'] = $(this).sortable('toArray');
+                obj['folders'] = columnid;
+               /* $.post('savepositions', obj, function (data) {
+
+                 });*/
+            },
             receive:function(event, ui ){
                 var data1 ={};
                 data1['colid'] = $(this).parent().attr('id');
@@ -574,6 +637,7 @@ $(document).ready(function(){
 
         });
     });*/
+    //--------------------------- file upload --------------------------//
     $(function(){
         var cont = $('#dropfiles');
         cont.on('dragover', function(e){
@@ -618,6 +682,42 @@ $(document).ready(function(){
         });
 
     });
+    //----------------------------- profileimg upload ---------------------------//
+    $('form#imgform').submit(function(e){
+        e.preventDefault();
+        $('#imgerors').text('');
+        var profileid = $('.userinfo').attr('id');
+        var form = document.querySelector('form#imgform');
+        var formdata = new FormData(form);
+        var name = $('#imgupload').val();
+       formdata.append('profileid', profileid);
+        $.ajax({
+            url: 'imgupload',
+            type: 'POST',
+            data: formdata,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data){
+
+               if(!data.success){
+                $('#imgerors').text(data.error['image']).css('color', 'red');
+
+                    $("#imgform")[0].reset();
+                }if(data.success) {
+                    $('#imgerors').text(data.error).css('color', 'green');
+                    console.log(data.img);
+                    $('#profileimg').attr('src', 'profileimg/'+data.img);
+                    $("#imgform")[0].reset();
+                }
+            }
+    });
+        //var ext = file.name.split('.').pop().toLowerCase();
+
+       /* var request = new XMLHttpRequest();
+        request.open('post', 'imgupload');
+        request.send(formdata);*/
+    });
 //-------------------download file function-------------------//
     $('#taskinfo').delegate(".downimg", "click", function(e){
         e.preventDefault();
@@ -640,6 +740,131 @@ $(document).ready(function(){
         $('#filename').text('Attachments (' +attachments+')');
 
 
+    });
+    $( ".alert" ).click(function(e) {
+        e.preventDefault();
+        var taskid = $('#taskid').text();
+        var data = {};
+        data['id'] = taskid;
+        $.post('changestatus', data, function(data){
+            console.log(data);
+        });
+        var task = $('#tabs-1').find('#'+taskid);
+        var task2 = $('#tabs-2').find('#'+taskid);
+        task.toggleClass('color');
+        task2.toggleClass('color');
+        $('.alert').toggleClass('switch');
+
+
+    });
+
+    $('#folderlist4').change(function(){
+        var value = $(this).val();
+        var taskid = $('#taskid').text();
+        var data = {};
+        data['colid'] = value;
+        data ['taskid'] = taskid;
+        $.post('folderupdate', data, function(data){
+            console.log(data);
+        });
+        $('#tabs-2').find('#'+taskid).appendTo( $('#'+value).children('.item-column'));
+        console.log(value);
+
+
+    });
+
+
+    $("#newnotes").focus(function(e) {
+        console.log('in');
+        if (e.which === 27){
+            return false;
+        }
+    }).blur(function() {
+        var data = {};
+        var text = $('#newnotes').val();
+        var taskid = $('#taskid').text();
+        data['taskid'] = taskid;
+        data['note'] = text;
+        $.post('noteupdate', data, function(data){
+            console.log(data)
+        });
+    });
+
+    $("body").on("blur", ".subname", function(e) {
+
+        var data = {};
+        var text = $(this).val();
+        var subid = $(this).parent().attr('id');
+        data['subsid'] = subid;
+        data['subtask'] = text;
+        $.post('subtaskupdt', data, function(data){
+            console.log(data)
+        });
+    });
+    $('.userinfo').click(function(){
+        var data = {};
+        data['userid'] = $('.userinfo').attr('id');
+        $.post('getuserinfo3',data,  function(data){
+            if (data.img){
+            $('#profileimg').attr('src', 'profileimg/'+data.img);
+            }
+            $('#name').val(data.name);
+            $('#surname').val(data.surname);
+            $('#email').val(data.email);
+        });
+        $('#usercontrol').show(300);
+        $('#hover').show(150);
+    });
+    $('#hover').click(function(){
+        $('#imgerors').text('');
+        $('.updtimg').css('display', 'none');
+        $("#imgform")[0].reset();
+        $('#usercontrol').hide(200);
+        $('#hover').hide();
+    });
+    $('#updtname').click(function(){
+        var data = {};
+        data['userid'] = $('.userinfo').attr('id');
+        data['name'] = $(this).parent().children('#name').val();
+        if (data['name'] != 0){
+        $.post('updtname', data, function(data){
+        });
+
+        }if (data['name'] == 0){
+            alert('Please enter the name');
+        }
+        $('#updtname').css('display', 'none');
+    });
+    $('#updtsurname').click(function(){
+        var data = {};
+        data['userid'] = $('.userinfo').attr('id');
+        data['surname'] = $(this).parent().children('#surname').val();
+        if (data['surname'] != 0){
+            $.post('updtsurname', data, function(data){
+            });
+
+        }if (data['surname'] == 0){
+            alert('Please enter the surname');
+        }
+        $('#updtsurname').css('display', 'none');
+    });
+
+    $('#updtemail').click(function(){
+        $('#updterors').text('');
+        var data = {};
+        data['userid'] = $('.userinfo').attr('id');
+        data['email'] = $(this).parent().children('#email').val();
+        if (data['email'] != 0){
+            $.post('updtemail', data, function(data){
+                if (!data.success){
+                $('#updterors').text(data.error['email']);
+                }
+            });
+
+        }if (data['email'] == 0){
+            alert('Please enter the email');
+        }
+        $('#updtemail').css('display', 'none');
     });
 
 

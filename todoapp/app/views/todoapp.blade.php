@@ -13,46 +13,36 @@
   </script>
 </head>
 <body>
-<div id="mainpg">
-    <div id="mytabs">
-      <div id="mainlist">
-      <ul>
-       <li class="mainlist" id="reg">Registration</li>
-       <li class="mainlist" id="log">Login</li>
-      </ul>
-      </div>
-      <div id="loginform">
-      <div id="loginbox">
-                <form id ="logform" action="login" method="post">
-                            <input class="reg" type="text" name="login" placeholder="Login" id="userlogin">
-                            <input class="reg" type="password" name="password" placeholder="Password" id="userpass">
-                            <button type="submit" id="logbutton">Login</button>
-                </form>
-      </div>
-      <ul id="logerrors" style="display: none"></ul>
-      </div>
-      <div id="registerform">
-            <div id="registerbox">
-                <form id ="regform" action="registration" method="post">
-                    <input class="reg" type="text" name="login" placeholder="Login" id="userlog">
-                    <input class="reg" type="text" name="name" placeholder="Name" id="username">
-                    <input class="reg" type="text" name="surname" placeholder="Surname" id="usersur">
-                    <input class="reg" type="text" name="email" placeholder="Email" id="usermail">
-                    <input class="reg" type="password" name="pass1" placeholder="Password" id="userpass1">
-                    <input class="reg" type="password" name="pass2" placeholder="Repeat password" id="userpass2">
-                    <h4 id="question"></h4>
-                    <input  id="validate" type="text" maxlength="2" size="2">
-                    <button type="submit" id="regbutton">Register</button>
-                </form>
-            </div>
-
-
-            <ul id="errors" style="display: none">
-
-            </ul>
-       </div>
+<div id="usercontrol">
+    <div id="picture">
+        <img id="profileimg" src="img/profile.png" width="150" height="150" alt="post img">
     </div>
+    <div id="imguploadbox">
+        <form id="imgform" enctype="multipart/form-data">
+             <label for="image">(.jpg .png .jpeg)</label>
+             <input type="file" id="imgupload" id="image" name="image">
+             <button type="submit">Upload</button>
+        </form>
+        <p id="imgerors"></p>
+    </div>
+    <div id="userinfomanage">
+        <div class="edit">
+            <input class="editp" id="name" name="name">
+            <img id="updtname" class="updtimg" src="img/update.jpg" width="80" height="40" alt="post img">
+        </div>
+        <div class="edit">
+            <input class="editp" id="surname" name="surname">
+            <img id="updtsurname" class="updtimg" src="img/update.jpg" width="80" height="40" alt="post img">
+        </div>
+        <div class="edit">
+            <input class="editp" id="email" name="email">
+            <img id="updtemail" class="updtimg" src="img/update.jpg" width="80" height="40" alt="post img">
+        </div>
+        <p id="updterors" align="center"></p>
+    </div>
+
 </div>
+<div id="hover"></div>
     <div id="conteiner">
         <div id="header">
             <div id="nav-bar">
@@ -68,8 +58,8 @@
                             </ul>
             </div>
             <div id="userinfobox">
-            <img id="logout" src="img/logout.png" width="25" height="25" alt="post img">
-            <h4 id="userinfo"></h4>
+            <a href="logout"><img id="logout" src="img/logout.png" width="25" height="25" alt="post img"></a>
+            <h4 class="userinfo" id="{{ Auth::user()->id }}">Profile</h4>
             </div>
             <div id="searchbox">
                 <input id="search" placeholder="Search tasks "type="text">
@@ -83,40 +73,53 @@
         <div id="main">
         <div id="addtask">
             <div id="taskcontainer">
+            <img id="gotomain" src="img/goback.png" width="40" height="40" alt="post img">
                 <h2 id="dayid" style="display: none"></h2>
-                <input id="newtask" placeholder="I want to...">
-                <form id="folderlist2">
+                <div id="titlebox">
+                    <textarea id="newtask" placeholder="I want to..." autofocus></textarea>
+                    <img id="addtaskbutton2" src="img/addtask.jpg" width="60" height="60" alt="post img">
+                </div>
+                <select id="folderlist3">
+               </select>
 
-                </form>
-                <input id="dateadd" type="date">
-                <button id="addtaskbutton">Add task</button>
-                <h2 id="gotomain">Back to main</h2>
             </div>
         </div>
 
 
         <div id="taskinfo">
             <div id="info">
+                 <img id="backtask" src="img/goback.png" width="40" height="40" alt="post img">
                  <p id="taskid" style="display: none"></p>
                  <div id="tasknameupdt">
-                 <input id="update">
-                 <button id="updttask">Update</button>
+                 <textarea id="update" style="overflow:hidden" autofocus></textarea>
+                 </div>
+                 <div id="features">
+                     <select id="folderlist4"></select>
+                     <img class="alert" src="img/alert.jpg" width="35" height="30" alt="post img">
                  </div>
             </div>
-            <h2 id="backtask">go to main</h2>
+
             <div id="manageform">
                    <h3 class="managenames" id="notes">Notes</h3>
                    <h3 class="managenames" id="subtasks228">Subtasks</h3>
                    <h3 class="managenames" id="filename">Attachments</h3>
                   <div class="manage" id="managesubs" style="display: none">
                   <h2>Manage subtasks</h2>
-                  <input id="newsub" placeholder="add subtask ">
-                 <ul id="subtasklist"></ul>
-                 </div>
+                  <div id="subtaskwraper">
+                     <div id="newsubblock">
+                     <input id="newsub" placeholder="+ Add a sub task">
+                     </div>
+                     <div id="addededsubs">
+                     <ul id="subslist">
+
+                     </ul>
+                     </div>
+                     </div>
+                    </div>
+
                  <div class="manage" id="managenotes">
                  <h2>Manage notes</h2>
-                 <input id="newnote" placeholder="add note ">
-                 <ul id="notelist"></ul>
+                 <textarea id='newnotes' class="notes"></textarea>
                  </div>
                  <div class="manage" id="managefiles" style="display: none">
                 <div class="drop" id="dropfiles"> Drop files here...</div>
@@ -143,9 +146,18 @@ $days= ["Today","Tomorrow", "Upcoming", "Someday"]
 
 
     if ($row['dayid']==$i){
-    ?>
-    <div class="taskcont" id="<?php echo $row['id'];?>">
 
+        if ($row['status'] == 1){
+        ?>
+        <div class="taskcont color" id="<?php echo $row['id'];?>">
+        <?php
+        }
+        else {
+        ?>
+        <div class="taskcont" id="<?php echo $row['id'];?>">
+        <?php
+        }
+        ?>
              <p class="text"><?php echo $row['taskname'];?></p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a>
         </div>
     <?php
@@ -172,12 +184,22 @@ $days= ["Today","Tomorrow", "Upcoming", "Someday"]
 
                                   <div class="item-column">
               <?php
+
                   foreach ($tasks as $task=>$row){
 
 
                   if ($row['folderid']==$folders[$i-1]['id']){
-                  ?>
-                  <div class="taskcont" id="<?php echo $row['id'];?>">
+                  if ($row['status'] == 1){
+                          ?>
+                          <div class="taskcont color" id="<?php echo $row['id'];?>">
+                          <?php
+                          }
+                          else {
+                          ?>
+                          <div class="taskcont" id="<?php echo $row['id'];?>">
+                          <?php
+                          }
+                          ?>
 
                            <p class="text"><?php echo $row['taskname'];?></p><a class="delete"><img src="img/delbutton.jpg" width="20" height="20" alt="post img"></a>
                       </div>
@@ -197,7 +219,8 @@ $days= ["Today","Tomorrow", "Upcoming", "Someday"]
 
 </div>
 
-
+</div>
+   </div>
 
 </body>
 
